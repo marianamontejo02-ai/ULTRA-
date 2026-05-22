@@ -1,197 +1,208 @@
-<section class="hero-v2" id="hero-section">
-  <!-- Background image with overlay -->
-  <div class="hero-v2__bg">
-    {% if section.settings.bg_image != blank %}
-      <img
-        src="{{ section.settings.bg_image | image_url: width: 1800 }}"
-        alt="Hero background"
-        class="hero-v2__bg-img"
-        fetchpriority="high"
-        width="1800"
-        height="900"
-      >
-    {% else %}
-      <div class="hero-v2__bg-gradient"></div>
-    {% endif %}
-    <div class="hero-v2__overlay"></div>
-  </div>
+<section class="hero-clean" id="hero-section">
 
-  <!-- Floating decorative orbs -->
-  <div class="hero-orb hero-orb--1"></div>
-  <div class="hero-orb hero-orb--2"></div>
-  <div class="hero-orb hero-orb--3"></div>
+  {% if section.settings.layout == 'split' %}
+  <!-- ── Split layout: texto izquierda / imagen derecha ── -->
+  <div class="hero-clean__split">
 
-  <div class="container hero-v2__container">
-    <div class="hero-v2__left">
-      <!-- Animated pill -->
-      <div class="hero-v2__pill">
-        <span class="hero-v2__pill-pulse"></span>
-        <span>{{ section.settings.pill_text }}</span>
-      </div>
+    <div class="hero-clean__text-col">
+      <div class="hero-clean__text-wrap">
+        {% if section.settings.eyebrow != blank %}
+          <p class="hero-clean__eyebrow">{{ section.settings.eyebrow }}</p>
+        {% endif %}
 
-      <!-- Title with highlight -->
-      <h1 class="hero-v2__title">
-        {{ section.settings.title | replace: '[naranja]', '<mark class="hero-mark">' | replace: '[/naranja]', '</mark>' }}
-      </h1>
+        <h1 class="hero-clean__title">
+          {{ section.settings.title | replace: '[acento]', '<em>' | replace: '[/acento]', '</em>' }}
+        </h1>
 
-      <p class="hero-v2__desc">{{ section.settings.subtitle }}</p>
+        {% if section.settings.subtitle != blank %}
+          <p class="hero-clean__subtitle">{{ section.settings.subtitle }}</p>
+        {% endif %}
 
-      <!-- CTA buttons -->
-      <div class="hero-v2__btns">
-        <a href="{{ section.settings.btn1_url }}" class="hero-btn-primary">
-          {{ section.settings.btn1_text }}
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </a>
-        {% if section.settings.btn2_text != blank %}
-          <a href="{{ section.settings.btn2_url }}" class="hero-btn-secondary">
-            {{ section.settings.btn2_text }}
-          </a>
+        <div class="hero-clean__btns">
+          {% if section.settings.btn1_text != blank %}
+            <a href="{{ section.settings.btn1_url }}" class="hero-clean__btn-primary">
+              {{ section.settings.btn1_text }}
+            </a>
+          {% endif %}
+          {% if section.settings.btn2_text != blank %}
+            <a href="{{ section.settings.btn2_url }}" class="hero-clean__btn-outline">
+              {{ section.settings.btn2_text }}
+            </a>
+          {% endif %}
+        </div>
+
+        {% if section.blocks.size > 0 %}
+          <div class="hero-clean__stats">
+            {% for block in section.blocks %}
+              <div class="hero-clean__stat" {{ block.shopify_attributes }}>
+                <strong>{{ block.settings.value }}</strong>
+                <span>{{ block.settings.label }}</span>
+              </div>
+              {% unless forloop.last %}<div class="hero-clean__stat-sep"></div>{% endunless %}
+            {% endfor %}
+          </div>
         {% endif %}
       </div>
-
-      <!-- Social proof avatars -->
-      <div class="hero-v2__social-proof">
-        <div class="hero-avatars">
-          <div class="hero-avatar" style="background:#f9a8d4">M</div>
-          <div class="hero-avatar" style="background:#c4b5fd">A</div>
-          <div class="hero-avatar" style="background:#6ee7b7">L</div>
-          <div class="hero-avatar" style="background:#fcd34d">V</div>
-          <div class="hero-avatar" style="background:#fb923c">+</div>
-        </div>
-        <div class="hero-proof-text">
-          <strong>+10.000 clientas</strong> ya transformaron su belleza
-          <div class="hero-stars">★★★★★ <span>4.9/5</span></div>
-        </div>
-      </div>
     </div>
 
-    <!-- Right: floating product showcase -->
-    <div class="hero-v2__right">
-      <div class="hero-showcase">
-        <!-- Main product card floating -->
-        <div class="hero-product-card" style="animation-delay:0s">
-          <div class="hero-product-img">
-            {% if section.settings.showcase_image != blank %}
-              <img src="{{ section.settings.showcase_image | image_url: width: 400 }}" alt="Producto destacado" width="400" height="400">
-            {% else %}
-              <div class="hero-product-placeholder">✨</div>
-            {% endif %}
-          </div>
-          <div class="hero-product-info">
-            <p class="hero-product-name">{{ section.settings.showcase_name | default: 'Base Anyeluz Pro' }}</p>
-            <p class="hero-product-sub">{{ section.settings.showcase_sub | default: 'Cobertura total · 32 tonos' }}</p>
-            <div class="hero-product-price">{{ section.settings.showcase_price | default: '$45.900' }}</div>
-          </div>
-        </div>
-
-        <!-- Floating badges -->
-        <div class="hero-float-badge hero-float-badge--1">
-          <div class="hero-float-badge__icon">🚀</div>
-          <div>
-            <strong>Envío hoy</strong>
-            <span>Antes de las 3pm</span>
-          </div>
-        </div>
-
-        <div class="hero-float-badge hero-float-badge--2">
-          <div class="hero-float-badge__icon">🔥</div>
-          <div>
-            <strong>{{ 'now' | date: '%s' | modulo: 28 | plus: 12 }} personas</strong>
-            <span>viendo ahora</span>
-          </div>
-        </div>
-
-        <div class="hero-float-badge hero-float-badge--3">
-          <div class="hero-float-badge__icon">⭐</div>
-          <div>
-            <strong>Top ventas</strong>
-            <span>Semana</span>
-          </div>
-        </div>
-
-        <!-- Color palette preview -->
-        <div class="hero-color-palette">
-          <span class="hero-palette-label">Tonos disponibles</span>
-          <div class="hero-palette-dots">
-            <span class="palette-dot" style="background:#f3c9a0" title="Ivory"></span>
-            <span class="palette-dot" style="background:#e8a87c" title="Beige Natural"></span>
-            <span class="palette-dot" style="background:#c97c50" title="Sand"></span>
-            <span class="palette-dot" style="background:#9c5a35" title="Caramel"></span>
-            <span class="palette-dot" style="background:#7a3e22" title="Espresso"></span>
-            <span class="palette-dot palette-dot--more">+27</span>
-          </div>
-        </div>
-      </div>
+    <div class="hero-clean__img-col">
+      {% if section.settings.image != blank %}
+        <img
+          src="{{ section.settings.image | image_url: width: 1200 }}"
+          alt="{{ section.settings.image_alt | default: shop.name }}"
+          class="hero-clean__img"
+          fetchpriority="high"
+          width="1200" height="1400"
+        >
+      {% else %}
+        <div class="hero-clean__img-placeholder"></div>
+      {% endif %}
     </div>
+
   </div>
 
-  <!-- Stats bar -->
-  <div class="hero-v2__stats">
-    <div class="container">
-      <div class="hero-stats-grid">
-        {% for block in section.blocks %}
-          <div class="hero-stat-item" {{ block.shopify_attributes }}>
-            <div class="hero-stat-value" data-count="{{ block.settings.value }}">{{ block.settings.value }}</div>
-            <div class="hero-stat-label">{{ block.settings.label }}</div>
-          </div>
-          {% unless forloop.last %}<div class="hero-stat-divider"></div>{% endunless %}
-        {% endfor %}
-      </div>
-    </div>
-  </div>
+  {% else %}
+  <!-- ── Full-bleed layout: imagen de fondo + texto encima ── -->
+  <div class="hero-clean__fullbleed">
 
-  <!-- Trust strip -->
-  <div class="hero-v2__trust">
-    <div class="container">
-      <div class="hero-trust-strip">
-        <span>🚚 Envío a todo Colombia</span>
-        <span class="trust-sep">·</span>
-        <span>💳 Hasta 12 cuotas sin interés</span>
-        <span class="trust-sep">·</span>
-        <span>🔄 Cambios en 30 días</span>
-        <span class="trust-sep">·</span>
-        <span>✅ Productos 100% originales</span>
-        <span class="trust-sep">·</span>
-        <span>⚡ Despacho en 24h</span>
+    {% if section.settings.image != blank %}
+      <img
+        src="{{ section.settings.image | image_url: width: 1800 }}"
+        alt="{{ section.settings.image_alt | default: shop.name }}"
+        class="hero-clean__bg-img"
+        fetchpriority="high"
+        width="1800" height="1000"
+      >
+    {% else %}
+      <div class="hero-clean__bg-fallback"></div>
+    {% endif %}
+
+    <div class="hero-clean__overlay" style="--overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }}"></div>
+
+    <div class="container hero-clean__fullbleed-inner">
+      <div class="hero-clean__text-wrap hero-clean__text-wrap--{{ section.settings.text_align }}">
+        {% if section.settings.eyebrow != blank %}
+          <p class="hero-clean__eyebrow">{{ section.settings.eyebrow }}</p>
+        {% endif %}
+
+        <h1 class="hero-clean__title hero-clean__title--light">
+          {{ section.settings.title | replace: '[acento]', '<em>' | replace: '[/acento]', '</em>' }}
+        </h1>
+
+        {% if section.settings.subtitle != blank %}
+          <p class="hero-clean__subtitle hero-clean__subtitle--light">{{ section.settings.subtitle }}</p>
+        {% endif %}
+
+        <div class="hero-clean__btns">
+          {% if section.settings.btn1_text != blank %}
+            <a href="{{ section.settings.btn1_url }}" class="hero-clean__btn-primary">
+              {{ section.settings.btn1_text }}
+            </a>
+          {% endif %}
+          {% if section.settings.btn2_text != blank %}
+            <a href="{{ section.settings.btn2_url }}" class="hero-clean__btn-light">
+              {{ section.settings.btn2_text }}
+            </a>
+          {% endif %}
+        </div>
+
+        {% if section.blocks.size > 0 %}
+          <div class="hero-clean__stats hero-clean__stats--light">
+            {% for block in section.blocks %}
+              <div class="hero-clean__stat" {{ block.shopify_attributes }}>
+                <strong>{{ block.settings.value }}</strong>
+                <span>{{ block.settings.label }}</span>
+              </div>
+              {% unless forloop.last %}<div class="hero-clean__stat-sep hero-clean__stat-sep--light"></div>{% endunless %}
+            {% endfor %}
+          </div>
+        {% endif %}
       </div>
     </div>
+
   </div>
+  {% endif %}
+
+  <!-- Trust strip limpio -->
+  {% if section.settings.show_trust %}
+    <div class="hero-clean__trust">
+      <div class="container">
+        <ul class="hero-clean__trust-list">
+          {% for block in section.blocks %}{% endfor %}
+          <li>Envío a todo Colombia</li>
+          <li class="trust-dot"></li>
+          <li>Hasta 12 cuotas</li>
+          <li class="trust-dot"></li>
+          <li>Cambios en 30 días</li>
+          <li class="trust-dot"></li>
+          <li>Productos 100% originales</li>
+        </ul>
+      </div>
+    </div>
+  {% endif %}
+
 </section>
 
 {% schema %}
 {
   "name": "Hero principal",
   "settings": [
-    { "type": "image_picker", "id": "bg_image", "label": "Imagen de fondo" },
-    { "type": "image_picker", "id": "showcase_image", "label": "Imagen producto destacado" },
-    { "type": "text", "id": "pill_text", "label": "Texto pastilla animada", "default": "✨ Nueva colección — Primavera 2025" },
-    { "type": "text", "id": "title", "label": "Título (usa [naranja]...[/naranja] para el acento)", "default": "Tu belleza, [naranja]accesible[/naranja] y moderna." },
-    { "type": "textarea", "id": "subtitle", "label": "Subtítulo", "default": "Maquillaje, cuidado capilar y dermocosméticos premium para mujeres colombianas que quieren verse increíbles sin gastar de más." },
-    { "type": "text", "id": "btn1_text", "label": "Botón 1 texto", "default": "Ver productos" },
-    { "type": "url",  "id": "btn1_url",  "label": "Botón 1 enlace" },
-    { "type": "text", "id": "btn2_text", "label": "Botón 2 texto", "default": "🔥 Ver ofertas" },
-    { "type": "url",  "id": "btn2_url",  "label": "Botón 2 enlace" },
-    { "type": "text", "id": "showcase_name", "label": "Nombre producto showcase", "default": "Base Anyeluz Pro" },
-    { "type": "text", "id": "showcase_sub",  "label": "Descripción showcase", "default": "Cobertura total · 32 tonos" },
-    { "type": "text", "id": "showcase_price","label": "Precio showcase", "default": "$45.900" }
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Diseño",
+      "options": [
+        { "value": "split",     "label": "Dividido — texto izquierda, imagen derecha" },
+        { "value": "fullbleed", "label": "Imagen de fondo completa" }
+      ],
+      "default": "split"
+    },
+    { "type": "image_picker", "id": "image",     "label": "Imagen principal" },
+    { "type": "text",         "id": "image_alt", "label": "Texto alternativo imagen", "default": "ULTRA belleza" },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Alineación del texto (solo modo fondo completo)",
+      "options": [
+        { "value": "left",   "label": "Izquierda" },
+        { "value": "center", "label": "Centro" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Oscuridad del overlay (solo fondo completo)",
+      "min": 0, "max": 70, "step": 5, "default": 40,
+      "unit": "%"
+    },
+    { "type": "text",     "id": "eyebrow",   "label": "Texto pequeño sobre el título",  "default": "Nueva colección" },
+    { "type": "text",     "id": "title",     "label": "Título principal (usa [acento]...[/acento] para cursiva naranja)", "default": "Tu belleza, [acento]accesible[/acento] y moderna." },
+    { "type": "textarea", "id": "subtitle",  "label": "Subtítulo",   "default": "Maquillaje, cuidado capilar y dermocosméticos para mujeres colombianas." },
+    { "type": "text",     "id": "btn1_text", "label": "Botón principal — texto",  "default": "Ver productos" },
+    { "type": "url",      "id": "btn1_url",  "label": "Botón principal — enlace" },
+    { "type": "text",     "id": "btn2_text", "label": "Botón secundario — texto",  "default": "Ver ofertas" },
+    { "type": "url",      "id": "btn2_url",  "label": "Botón secundario — enlace" },
+    { "type": "checkbox", "id": "show_trust","label": "Mostrar barra de confianza", "default": true }
   ],
   "blocks": [
     {
       "type": "stat",
       "name": "Estadística",
+      "limit": 4,
       "settings": [
-        { "type": "text", "id": "value", "label": "Valor", "default": "+10.000" },
-        { "type": "text", "id": "label", "label": "Etiqueta", "default": "clientas felices" }
+        { "type": "text", "id": "value", "label": "Número o valor", "default": "+10.000" },
+        { "type": "text", "id": "label", "label": "Descripción",    "default": "clientas felices" }
       ]
     }
   ],
   "presets": [{
     "name": "Hero principal",
+    "settings": { "layout": "split" },
     "blocks": [
       { "type": "stat", "settings": { "value": "+10.000", "label": "clientas felices" } },
-      { "type": "stat", "settings": { "value": "+500",    "label": "marcas y productos" } },
-      { "type": "stat", "settings": { "value": "4.9★",   "label": "calificación promedio" } },
-      { "type": "stat", "settings": { "value": "24h",    "label": "tiempo de despacho" } }
+      { "type": "stat", "settings": { "value": "+500",    "label": "productos" } },
+      { "type": "stat", "settings": { "value": "4.9",     "label": "calificación" } }
     ]
   }]
 }
