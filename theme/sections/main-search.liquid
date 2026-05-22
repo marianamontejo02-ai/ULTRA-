@@ -37,8 +37,8 @@
         <div class="products-grid">
           {% for item in search.results %}
             {% if item.object_type == 'product' %}
-              {% assign product = item %}
-              {% render 'product-card', product: product %}
+              {% assign search_product = item %}
+              {% render 'product-card', card_product: search_product %}
             {% endif %}
           {% endfor %}
         </div>
