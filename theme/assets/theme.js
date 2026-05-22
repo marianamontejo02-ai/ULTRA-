@@ -32,43 +32,36 @@
   }, { passive: true });
 })();
 
-/* ─── Mobile menu ────────────────────────────────────────── */
+/* ─── Mobile menu (slide-in panel) ──────────────────────── */
 (function () {
   const toggle  = document.getElementById('menu-toggle');
   const menu    = document.getElementById('mobile-menu');
-  const icon    = document.getElementById('menu-icon');
+  const overlay = document.getElementById('mobile-overlay');
+  const closeBtn= document.getElementById('mobile-menu-close');
   if (!toggle || !menu) return;
 
-  toggle.addEventListener('click', () => {
-    const open = menu.classList.toggle('open');
-    icon.setAttribute('data-open', open);
-  });
+  function openMenu() {
+    menu.classList.add('open');
+    overlay?.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu() {
+    menu.classList.remove('open');
+    overlay?.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  toggle.addEventListener('click', openMenu);
+  closeBtn?.addEventListener('click', closeMenu);
+  overlay?.addEventListener('click', closeMenu);
 
   // Accordion inside mobile menu
   document.querySelectorAll('.mobile-accordion-header').forEach(btn => {
     btn.addEventListener('click', () => {
       const list = btn.nextElementSibling;
       const open = list.classList.toggle('open');
-      btn.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', String(open));
     });
-  });
-})();
-
-/* ─── Search toggle ──────────────────────────────────────── */
-(function () {
-  const btn   = document.getElementById('search-toggle');
-  const form  = document.getElementById('search-form-desktop');
-  const close = document.getElementById('search-close');
-  if (!btn || !form) return;
-
-  btn.addEventListener('click', () => {
-    form.classList.toggle('open');
-    if (form.classList.contains('open')) form.querySelector('input')?.focus();
-    btn.style.display = form.classList.contains('open') ? 'none' : '';
-  });
-  close?.addEventListener('click', () => {
-    form.classList.remove('open');
-    btn.style.display = '';
   });
 })();
 

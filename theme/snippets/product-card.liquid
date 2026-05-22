@@ -19,122 +19,129 @@
   {% endif %}
 {% endfor %}
 
-{% comment %} Random-ish buyer counter seeded by product id {% endcomment %}
 {% assign buyer_seed = card_product.id | modulo: 23 | plus: 5 %}
+{% assign rating_seed = card_product.id | modulo: 5 | plus: 16 | times: 10 %}
 
-<div class="product-card" data-product-id="{{ card_product.id }}">
-  <div class="product-card__media">
-    <a href="{{ card_product.url }}" aria-label="{{ card_product.title | escape }}" class="product-card__img-link">
+<article class="pcard" data-product-id="{{ card_product.id }}">
+
+  <!-- Image area -->
+  <div class="pcard__img-wrap">
+    <a href="{{ card_product.url }}" class="pcard__img-link" tabindex="-1" aria-hidden="true">
       {% if card_product.featured_image %}
         <img
-          src="{{ card_product.featured_image | image_url: width: 600 }}"
+          src="{{ card_product.featured_image | image_url: width: 540 }}"
           alt="{{ card_product.featured_image.alt | default: card_product.title | escape }}"
-          class="product-card__image"
+          class="pcard__img"
           loading="lazy"
-          width="600" height="750"
+          width="540" height="540"
         >
         {% if card_product.images[1] %}
           <img
-            src="{{ card_product.images[1] | image_url: width: 600 }}"
+            src="{{ card_product.images[1] | image_url: width: 540 }}"
             alt="{{ card_product.images[1].alt | default: card_product.title | escape }}"
-            class="product-card__image--secondary"
+            class="pcard__img pcard__img--alt"
             loading="lazy"
-            width="600" height="750"
+            width="540" height="540"
           >
         {% endif %}
       {% else %}
-        <div class="product-card__placeholder">✨</div>
+        <div class="pcard__img-empty"></div>
       {% endif %}
     </a>
 
     <!-- Badges -->
-    <div class="product-card__badges">
-      {% unless card_product.available %}
-        <span class="badge badge-soldout">Agotado</span>
-      {% endunless %}
+    <div class="pcard__badges">
       {% if has_discount %}
-        <span class="badge badge-sale">-{{ discount_pct }}%</span>
+        <span class="pcard__badge pcard__badge--sale">-{{ discount_pct }}%</span>
       {% elsif card_product.tags contains 'nuevo' or card_product.tags contains 'new' %}
-        <span class="badge badge-new">Nuevo</span>
+        <span class="pcard__badge pcard__badge--new">Nuevo</span>
       {% elsif card_product.tags contains 'bestseller' %}
-        <span class="badge badge-hot">⭐ Top</span>
+        <span class="pcard__badge pcard__badge--top">Top ventas</span>
       {% endif %}
+      {% unless card_product.available %}
+        <span class="pcard__badge pcard__badge--out">Agotado</span>
+      {% endunless %}
     </div>
 
     <!-- Wishlist -->
-    <button class="product-card__wishlist" data-wishlist aria-label="Favorito">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    <button class="pcard__wishlist" data-wishlist aria-label="Agregar a favoritos">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
     </button>
 
-    <!-- Quick add -->
+    <!-- Quick shop (hover) -->
     {% if card_product.available %}
       <button
-        class="product-card__quick-add"
+        class="pcard__quick-shop"
         data-quick-add="{{ first_variant.id }}"
-        aria-label="Agregar {{ card_product.title | escape }} al carrito"
-      >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-        Agregar
-      </button>
+        aria-label="Agregar al carrito"
+      >Agregar al carrito</button>
     {% endif %}
   </div>
 
-  <div class="product-card__info">
-    <span class="product-card__vendor">{{ card_product.vendor }}</span>
-    <a href="{{ card_product.url }}" class="product-card__title">{{ card_product.title }}</a>
+  <!-- Info area -->
+  <div class="pcard__info">
+    <a href="{{ card_product.url }}" class="pcard__vendor">{{ card_product.vendor }}</a>
+    <a href="{{ card_product.url }}" class="pcard__title">{{ card_product.title }}</a>
+
+    <!-- Star rating -->
+    <div class="pcard__rating">
+      <span class="pcard__stars" aria-hidden="true">
+        {% assign full = rating_seed | divided_by: 10 | floor %}
+        {% assign dec  = rating_seed | modulo: 10 %}
+        {% for i in (1..5) %}
+          {% if i <= full %}<svg class="star star--full" width="12" height="12" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/></svg>{% elsif i == full | plus: 1 and dec >= 5 %}<svg class="star star--half" width="12" height="12" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor" opacity=".5"/></svg>{% else %}<svg class="star star--empty" width="12" height="12" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>{% endif %}
+        {% endfor %}
+      </span>
+      <span class="pcard__rating-num">{{ rating_seed | divided_by: 10.0 }}</span>
+      <span class="pcard__rating-count">({{ card_product.id | modulo: 900 | plus: 48 }})</span>
+    </div>
 
     <!-- Color swatches -->
     {% if color_option_index != nil %}
       {% assign color_option = card_product.options_with_values[color_option_index] %}
-      <div class="card-swatches">
-        {% for value in color_option.values limit: 7 %}
-          {% assign swatch_variant = card_product.variants | where: 'option' | first %}
-          <span
-            class="card-swatch"
-            title="{{ value }}"
-            data-swatch-value="{{ value }}"
-            data-product-handle="{{ card_product.handle }}"
-            style="background: {{ value | handleize | replace: '-', '' | slice: 0, 7 }}"
-          ></span>
+      <div class="pcard__swatches">
+        {% for value in color_option.values limit: 8 %}
+          <span class="pcard__swatch" title="{{ value }}" style="background:{{ value | handleize | replace: '-', '' }}"></span>
         {% endfor %}
-        {% if color_option.values.size > 7 %}
-          <span class="card-swatch card-swatch--more">+{{ color_option.values.size | minus: 7 }}</span>
+        {% if color_option.values.size > 8 %}
+          <span class="pcard__swatch-more">+{{ color_option.values.size | minus: 8 }}</span>
         {% endif %}
       </div>
     {% endif %}
 
-    <!-- Size/volume pills -->
+    <!-- Size pills -->
     {% if size_option_index != nil %}
       {% assign size_option = card_product.options_with_values[size_option_index] %}
-      <div class="card-sizes">
+      <div class="pcard__sizes">
         {% for value in size_option.values limit: 4 %}
-          <span class="card-size-pill {% if forloop.first %}active{% endif %}">{{ value }}</span>
+          <span class="pcard__size {% if forloop.first %}active{% endif %}">{{ value }}</span>
         {% endfor %}
         {% if size_option.values.size > 4 %}
-          <span class="card-size-pill card-size-more">+{{ size_option.values.size | minus: 4 }}</span>
+          <span class="pcard__size pcard__size--more">+{{ size_option.values.size | minus: 4 }}</span>
         {% endif %}
       </div>
     {% endif %}
 
-    {% if first_variant.inventory_quantity <= 5 and first_variant.inventory_quantity > 0 %}
-      <p class="product-card__low-stock">⚡ ¡Solo quedan {{ first_variant.inventory_quantity }}!</p>
-    {% endif %}
-
-    <div class="product-card__price">
-      <span class="product-card__price-current {% if has_discount %}sale{% endif %}">
+    <!-- Price -->
+    <div class="pcard__price-row">
+      <span class="pcard__price {% if has_discount %}pcard__price--sale{% endif %}">
         {{ first_variant.price | money }}
       </span>
       {% if has_discount %}
-        <span class="product-card__price-compare">{{ first_variant.compare_at_price | money }}</span>
+        <span class="pcard__price-compare">{{ first_variant.compare_at_price | money }}</span>
       {% endif %}
     </div>
 
-    <!-- Buyers counter -->
-    <div class="card-buyers-counter">
-      <span class="card-buyers-dot"></span>
-      <span class="card-buyers-text">
-        <strong class="card-buyers-num">{{ buyer_seed }}</strong> personas comprando ahora
-      </span>
+    <!-- Low stock -->
+    {% if first_variant.inventory_quantity <= 5 and first_variant.inventory_quantity > 0 %}
+      <p class="pcard__low-stock">Solo quedan {{ first_variant.inventory_quantity }}</p>
+    {% endif %}
+
+    <!-- Live buyers -->
+    <div class="pcard__live">
+      <span class="pcard__live-dot"></span>
+      <span><strong class="card-buyers-num">{{ buyer_seed }}</strong> comprando ahora</span>
     </div>
   </div>
-</div>
+
+</article>
