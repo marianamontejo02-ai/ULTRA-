@@ -6,26 +6,40 @@
   {% assign discount_pct = first_variant.compare_at_price | minus: first_variant.price | times: 100 | divided_by: first_variant.compare_at_price | round %}
 {% endif %}
 
-<div class="product-card">
+{% comment %} Detect option types {% endcomment %}
+{% assign color_option_index = nil %}
+{% assign size_option_index  = nil %}
+{% for option in card_product.options_with_values %}
+  {% assign opt_lower = option.name | downcase %}
+  {% if opt_lower == 'color' or opt_lower == 'tono' or opt_lower == 'shade' or opt_lower == 'color/tono' %}
+    {% assign color_option_index = forloop.index0 %}
+  {% endif %}
+  {% if opt_lower == 'tamaño' or opt_lower == 'tamano' or opt_lower == 'size' or opt_lower == 'ml' or opt_lower == 'gr' or opt_lower == 'presentación' %}
+    {% assign size_option_index = forloop.index0 %}
+  {% endif %}
+{% endfor %}
+
+{% comment %} Random-ish buyer counter seeded by product id {% endcomment %}
+{% assign buyer_seed = card_product.id | modulo: 23 | plus: 5 %}
+
+<div class="product-card" data-product-id="{{ card_product.id }}">
   <div class="product-card__media">
-    <a href="{{ card_product.url }}" aria-label="{{ card_product.title }}">
+    <a href="{{ card_product.url }}" aria-label="{{ card_product.title | escape }}" class="product-card__img-link">
       {% if card_product.featured_image %}
         <img
           src="{{ card_product.featured_image | image_url: width: 600 }}"
-          alt="{{ card_product.featured_image.alt | escape }}"
+          alt="{{ card_product.featured_image.alt | default: card_product.title | escape }}"
           class="product-card__image"
           loading="lazy"
-          width="600"
-          height="750"
+          width="600" height="750"
         >
         {% if card_product.images[1] %}
           <img
             src="{{ card_product.images[1] | image_url: width: 600 }}"
-            alt="{{ card_product.images[1].alt | escape }}"
+            alt="{{ card_product.images[1].alt | default: card_product.title | escape }}"
             class="product-card__image--secondary"
             loading="lazy"
-            width="600"
-            height="750"
+            width="600" height="750"
           >
         {% endif %}
       {% else %}
@@ -48,7 +62,7 @@
     </div>
 
     <!-- Wishlist -->
-    <button class="product-card__wishlist" data-wishlist aria-label="Agregar a favoritos">
+    <button class="product-card__wishlist" data-wishlist aria-label="Favorito">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
     </button>
 
@@ -57,11 +71,10 @@
       <button
         class="product-card__quick-add"
         data-quick-add="{{ first_variant.id }}"
-        data-text="Agregar al carrito"
-        aria-label="Agregar {{ card_product.title }} al carrito"
+        aria-label="Agregar {{ card_product.title | escape }} al carrito"
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-        Agregar al carrito
+        Agregar
       </button>
     {% endif %}
   </div>
@@ -69,6 +82,39 @@
   <div class="product-card__info">
     <span class="product-card__vendor">{{ card_product.vendor }}</span>
     <a href="{{ card_product.url }}" class="product-card__title">{{ card_product.title }}</a>
+
+    <!-- Color swatches -->
+    {% if color_option_index != nil %}
+      {% assign color_option = card_product.options_with_values[color_option_index] %}
+      <div class="card-swatches">
+        {% for value in color_option.values limit: 7 %}
+          {% assign swatch_variant = card_product.variants | where: 'option' | first %}
+          <span
+            class="card-swatch"
+            title="{{ value }}"
+            data-swatch-value="{{ value }}"
+            data-product-handle="{{ card_product.handle }}"
+            style="background: {{ value | handleize | replace: '-', '' | slice: 0, 7 }}"
+          ></span>
+        {% endfor %}
+        {% if color_option.values.size > 7 %}
+          <span class="card-swatch card-swatch--more">+{{ color_option.values.size | minus: 7 }}</span>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <!-- Size/volume pills -->
+    {% if size_option_index != nil %}
+      {% assign size_option = card_product.options_with_values[size_option_index] %}
+      <div class="card-sizes">
+        {% for value in size_option.values limit: 4 %}
+          <span class="card-size-pill {% if forloop.first %}active{% endif %}">{{ value }}</span>
+        {% endfor %}
+        {% if size_option.values.size > 4 %}
+          <span class="card-size-pill card-size-more">+{{ size_option.values.size | minus: 4 }}</span>
+        {% endif %}
+      </div>
+    {% endif %}
 
     {% if first_variant.inventory_quantity <= 5 and first_variant.inventory_quantity > 0 %}
       <p class="product-card__low-stock">⚡ ¡Solo quedan {{ first_variant.inventory_quantity }}!</p>
@@ -81,6 +127,14 @@
       {% if has_discount %}
         <span class="product-card__price-compare">{{ first_variant.compare_at_price | money }}</span>
       {% endif %}
+    </div>
+
+    <!-- Buyers counter -->
+    <div class="card-buyers-counter">
+      <span class="card-buyers-dot"></span>
+      <span class="card-buyers-text">
+        <strong class="card-buyers-num">{{ buyer_seed }}</strong> personas comprando ahora
+      </span>
     </div>
   </div>
 </div>

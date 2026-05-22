@@ -232,64 +232,90 @@ document.addEventListener('click', e => {
   btn.classList.toggle('active');
 });
 
-/* ─── Variant selector on PDP ────────────────────────────── */
+/* ─── Variant selector on PDP (swatches, size pills, generic) */
 (function () {
   const form = document.getElementById('product-form');
   if (!form) return;
 
-  form.querySelectorAll('.variant-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const group = btn.closest('.variant-buttons');
-      group.querySelectorAll('.variant-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+  const variants     = JSON.parse(document.getElementById('product-variants-json')?.textContent || '[]');
+  const productImages = JSON.parse(document.getElementById('product-images-json')?.textContent || '[]');
+  const mainImg      = document.getElementById('gallery-main-img');
+  const thumbsWrap   = document.getElementById('gallery-thumbs');
 
-      // Update label
-      const label = btn.closest('.variant-option')?.querySelector('.variant-selected-value');
-      if (label) label.textContent = btn.textContent.trim();
+  // Unified handler for all selector button types
+  form.addEventListener('click', e => {
+    const btn = e.target.closest('.variant-btn, .swatch-btn, .size-pill');
+    if (!btn) return;
 
-      // Find matching variant
-      updateSelectedVariant();
-    });
+    const group = btn.closest('.variant-buttons, .swatch-grid, .size-pill-row');
+    if (!group) return;
+    group.querySelectorAll('.variant-btn, .swatch-btn, .size-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    // Update label display
+    const optWrap = btn.closest('.variant-option');
+    if (optWrap) {
+      const labelEl = optWrap.querySelector('.variant-selected-value');
+      if (labelEl) labelEl.textContent = btn.getAttribute('data-value') || btn.textContent.trim();
+    }
+
+    updateSelectedVariant();
   });
 
-  function updateSelectedVariant() {
-    const selected = {};
+  function getSelectedOptions() {
+    const opts = [];
     form.querySelectorAll('.variant-option').forEach(opt => {
-      const name = opt.getAttribute('data-option-name');
-      const active = opt.querySelector('.variant-btn.active');
-      if (name && active) selected[name] = active.textContent.trim();
+      const activeBtn = opt.querySelector('.variant-btn.active, .swatch-btn.active, .size-pill.active');
+      opts.push(activeBtn ? (activeBtn.getAttribute('data-value') || activeBtn.textContent.trim()) : null);
     });
+    return opts;
+  }
 
-    const variants = JSON.parse(document.getElementById('product-variants-json')?.textContent || '[]');
-    const match = variants.find(v =>
-      v.options.every((val, i) => {
-        const key = `option${i + 1}`;
-        return Object.values(selected)[i] === val;
-      })
-    );
+  function updateSelectedVariant() {
+    const selected = getSelectedOptions();
+    const match = variants.find(v => v.options.every((val, i) => selected[i] === null || selected[i] === val));
+    if (!match) return;
 
-    if (match) {
-      document.getElementById('variant-id').value = match.id;
-      const priceEl = document.getElementById('product-price');
-      const compareEl = document.getElementById('product-compare-price');
-      if (priceEl) priceEl.textContent = Cart.formatMoney(match.price);
-      if (compareEl) {
-        if (match.compare_at_price > match.price) {
-          compareEl.textContent = Cart.formatMoney(match.compare_at_price);
-          compareEl.style.display = '';
-        } else {
-          compareEl.style.display = 'none';
+    document.getElementById('variant-id').value = match.id;
+
+    // Price update
+    const priceEl   = document.getElementById('product-price');
+    const compareEl = document.getElementById('product-compare-price');
+    const discBadge = document.getElementById('product-disc-badge');
+    if (priceEl) priceEl.textContent = Cart.formatMoney(match.price);
+    if (compareEl) {
+      if (match.compare_at_price > match.price) {
+        compareEl.textContent = Cart.formatMoney(match.compare_at_price);
+        compareEl.style.display = '';
+        if (discBadge) {
+          const pct = Math.round((match.compare_at_price - match.price) * 100 / match.compare_at_price);
+          discBadge.textContent = `Ahorras ${pct}%`;
+          discBadge.style.display = '';
         }
+      } else {
+        compareEl.style.display = 'none';
+        if (discBadge) discBadge.style.display = 'none';
       }
+    }
 
-      const addBtn = document.getElementById('add-to-cart-btn');
-      if (addBtn) {
-        if (match.available) {
-          addBtn.disabled = false;
-          addBtn.textContent = 'Agregar al carrito';
-        } else {
-          addBtn.disabled = true;
-          addBtn.textContent = 'Producto agotado';
+    // Button state
+    const addBtn = document.getElementById('add-to-cart-btn');
+    if (addBtn) {
+      addBtn.disabled = !match.available;
+      addBtn.innerHTML = addBtn.innerHTML.replace(/(Agregar al carrito|Producto agotado)/, match.available ? 'Agregar al carrito' : 'Producto agotado');
+    }
+
+    // Image switch when variant has a featured_image
+    if (match.featured_image && mainImg) {
+      const imgSrc = match.featured_image.src || '';
+      if (imgSrc) {
+        mainImg.style.opacity = '0';
+        setTimeout(() => { mainImg.src = imgSrc; mainImg.style.opacity = '1'; }, 200);
+        // Highlight matching thumb
+        if (thumbsWrap) {
+          thumbsWrap.querySelectorAll('.product-gallery__thumb').forEach(t => {
+            t.classList.toggle('active', t.getAttribute('data-src') === imgSrc || t.querySelector('img')?.src?.includes(match.featured_image.id));
+          });
         }
       }
     }
@@ -306,8 +332,11 @@ document.addEventListener('click', e => {
     thumb.addEventListener('click', () => {
       thumbs.forEach(t => t.classList.remove('active'));
       thumb.classList.add('active');
-      const src = thumb.querySelector('img')?.src;
-      if (src) { main.style.opacity = '0'; setTimeout(() => { main.src = src; main.style.opacity = '1'; }, 200); }
+      const src = thumb.getAttribute('data-src') || thumb.querySelector('img')?.src;
+      if (src) {
+        main.style.opacity = '0';
+        setTimeout(() => { main.src = src; main.style.opacity = '1'; }, 200);
+      }
     });
   });
 })();
@@ -339,3 +368,16 @@ document.querySelectorAll('.brand-pill[data-vendor]').forEach(pill => {
 document.querySelectorAll('.product-card__image').forEach(img => {
   img.style.transition = 'opacity .35s';
 });
+
+/* ─── Card buyers counter fluctuation ────────────────────── */
+(function () {
+  const counters = document.querySelectorAll('.card-buyers-num');
+  counters.forEach(el => {
+    let base = parseInt(el.textContent, 10) || 8;
+    setInterval(() => {
+      const delta = Math.floor(Math.random() * 3) - 1;
+      base = Math.max(3, Math.min(base + delta, 35));
+      el.textContent = base;
+    }, Math.floor(Math.random() * 8000) + 6000);
+  });
+})();
