@@ -1,0 +1,30 @@
+name: 🚀 Deploy → Shopify
+
+on:
+  push:
+    branches:
+      - claude/adoring-turing-Nwva8
+    paths:
+      - 'theme/**'
+
+  workflow_dispatch:  # Permite ejecutarlo manualmente desde GitHub
+
+jobs:
+  deploy:
+    name: Subir tema a Shopify
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Deploy → ULTRA belleza Shopify
+        env:
+          SHOPIFY_STORE: x0960f-c1.myshopify.com
+          SHOPIFY_TOKEN: ${{ secrets.SHOPIFY_TOKEN }}
+        run: python3 .github/scripts/deploy.py
