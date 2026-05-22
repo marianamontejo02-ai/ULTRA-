@@ -27,7 +27,7 @@
       2. Si no hay colección: muestra todos los productos de la tienda
     {% endcomment %}
     {% if section.settings.collection != blank %}
-      {% assign product_list = collections[section.settings.collection.handle].products %}
+      {% assign product_list = collections[section.settings.collection].products %}
     {% else %}
       {% assign product_list = collections.all.products %}
     {% endif %}

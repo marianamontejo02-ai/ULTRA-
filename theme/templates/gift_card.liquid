@@ -1,0 +1,39 @@
+{% layout 'theme' %}
+
+<div class="container" style="max-width:600px;margin:80px auto;text-align:center;padding:0 20px">
+  <div style="background:#fff;border-radius:16px;padding:48px;box-shadow:0 4px 24px rgba(0,0,0,.08)">
+    <svg width="64" height="64" viewBox="0 0 96 96" fill="none" style="margin-bottom:24px">
+      <circle cx="48" cy="48" r="47" fill="#E8621A"/>
+      <text x="48" y="54" text-anchor="middle" fill="white" font-size="22" font-weight="900" font-family="Arial Black,Arial,sans-serif">ULTRA</text>
+    </svg>
+    <h1 style="font-size:28px;font-weight:800;color:#1a1a1a;margin:0 0 8px">¡Tu regalo está aquí! 🎁</h1>
+    <p style="color:#666;font-size:16px;margin:0 0 32px">Tarjeta de regalo ULTRA belleza</p>
+
+    <div style="background:#fef3ee;border-radius:12px;padding:32px;margin-bottom:32px">
+      <p style="font-size:14px;color:#E8621A;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin:0 0 8px">Valor</p>
+      <p style="font-size:40px;font-weight:900;color:#E8621A;margin:0">{{ gift_card.initial_value | money }}</p>
+    </div>
+
+    <div style="background:#f9f9f9;border-radius:12px;padding:24px;margin-bottom:32px">
+      <p style="font-size:13px;color:#999;margin:0 0 8px">Código de tu tarjeta</p>
+      <p style="font-size:20px;font-weight:700;letter-spacing:3px;color:#1a1a1a;margin:0;font-family:monospace">{{ gift_card.code | format_code }}</p>
+    </div>
+
+    {% if gift_card.expired or gift_card.enabled == false %}
+      <p style="color:#ef4444;font-size:14px;margin-bottom:24px">Esta tarjeta ha expirado o está desactivada.</p>
+    {% else %}
+      {% if gift_card.balance != gift_card.initial_value %}
+        <p style="color:#666;font-size:14px;margin-bottom:24px">Saldo disponible: <strong style="color:#E8621A">{{ gift_card.balance | money }}</strong></p>
+      {% endif %}
+    {% endif %}
+
+    <a href="{{ shop.url }}" class="hero-clean__btn-primary" style="display:inline-block">
+      Ir a la tienda →
+    </a>
+
+    <p style="margin-top:24px;font-size:13px;color:#999">
+      ¿Necesitas ayuda?
+      <a href="https://wa.me/{{ settings.whatsapp_number }}" style="color:#E8621A">Contáctanos por WhatsApp</a>
+    </p>
+  </div>
+</div>
