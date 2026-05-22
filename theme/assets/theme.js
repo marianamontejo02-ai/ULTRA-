@@ -66,7 +66,7 @@
 })();
 
 /* ─── Cart ───────────────────────────────────────────────── */
-const SHIPPING_THRESHOLD = 150000; // COP
+const SHIPPING_THRESHOLD = 150000; // COP $150,000 (JS works with /100 from Shopify cents)
 
 const Cart = {
   overlay:   document.getElementById('cart-overlay'),

@@ -656,6 +656,12 @@ ul { list-style: none; }
 .fp-scroll-btn--next { right: -16px; }
 
 /* Bottom CTA */
+.fp-empty-state { text-align: center; padding: 60px 20px; border: 2px dashed var(--border); border-radius: var(--radius-xl); background: var(--bg-soft); }
+.fp-empty-icon { display: inline-flex; align-items: center; justify-content: center; width: 80px; height: 80px; border-radius: 50%; background: var(--ultra-50); color: var(--ultra); margin-bottom: 20px; }
+.fp-empty-title { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.fp-empty-desc { font-size: 14px; color: var(--text-muted); max-width: 400px; margin: 0 auto 24px; line-height: 1.6; }
+.fp-empty-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: var(--ultra); color: #fff; border-radius: var(--radius-xl); font-weight: 700; font-size: 14px; transition: opacity .2s; }
+.fp-empty-btn:hover { opacity: .88; }
 .fp-cta-wrap { text-align: center; margin-top: 36px; }
 .fp-cta-btn {
   display: inline-flex; align-items: center;
@@ -671,12 +677,12 @@ ul { list-style: none; }
 }
 
 /* ─── Brand Bar ──────────────────────────────────────────── */
-.brand-bar { padding: 40px 0; background: var(--bg-soft); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); overflow: hidden; }
+.brand-bar { padding: 40px 0; background: var(--bg-soft); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .brand-bar__label { text-align: center; font-size: 11px; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: .12em; margin-bottom: 20px; }
+.brand-bar__overflow { overflow: hidden; }
 .brand-bar__track { display: flex; gap: 16px; align-items: center; width: max-content; animation: ticker 30s linear infinite; }
-.brand-bar__item { display: flex; flex-direction: column; align-items: center; gap: 4px; flex-shrink: 0; padding: 10px 16px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow); min-width: 90px; text-align: center; }
-.brand-bar__flag { font-size: 22px; }
-.brand-bar__name { font-size: 11px; font-weight: 700; color: var(--text-muted); white-space: nowrap; }
+.brand-bar__item { display: flex; flex-direction: column; align-items: center; gap: 4px; flex-shrink: 0; padding: 10px 20px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow); min-width: 90px; text-align: center; }
+.brand-bar__name { font-size: 12px; font-weight: 700; color: var(--text-muted); white-space: nowrap; }
 
 /* ─── Social Proof ───────────────────────────────────────── */
 .reviews-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
@@ -706,6 +712,7 @@ ul { list-style: none; }
 .breadcrumb span { color: var(--text-light); }
 
 /* ─── Collection Page (Ulta-style sidebar layout) ────────── */
+.section-padding { padding-top: 48px; padding-bottom: 64px; }
 .coll-page { padding-bottom: 64px; }
 .coll-page__head { padding: 8px 0 20px; border-bottom: 1px solid var(--border); margin-bottom: 24px; }
 .coll-page__title { font-size: clamp(20px, 2.5vw, 30px); font-weight: 800; letter-spacing: -.02em; }

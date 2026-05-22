@@ -20,7 +20,8 @@
 {% endfor %}
 
 {% assign buyer_seed = card_product.id | modulo: 23 | plus: 5 %}
-{% assign rating_seed = card_product.id | modulo: 5 | plus: 16 | times: 10 %}
+{% comment %} rating_seed = 40..49 maps to 4.0–4.9 stars {% endcomment %}
+{% assign rating_seed = card_product.id | modulo: 10 | plus: 40 %}
 
 <article class="pcard" data-product-id="{{ card_product.id }}">
 

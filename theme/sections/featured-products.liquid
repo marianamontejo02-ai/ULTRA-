@@ -32,33 +32,45 @@
       {% assign product_list = collections.all.products %}
     {% endif %}
 
-    {% if section.settings.scroll_mode %}
-      <!-- Modo scroll horizontal (como Ulta "trending") -->
-      <div class="fp-scroll-wrap">
-        <div class="fp-scroll-track">
+    {% comment %} Count products to decide empty state {% endcomment %}
+    {% assign has_products = false %}
+    {% for p in product_list limit: 1 %}
+      {% assign has_products = true %}
+    {% endfor %}
+
+    {% if has_products %}
+      {% if section.settings.scroll_mode %}
+        <!-- Modo scroll horizontal (como Ulta "trending") -->
+        <div class="fp-scroll-wrap">
+          <div class="fp-scroll-track">
+            {% for product in product_list limit: section.settings.products_count %}
+              {% render 'product-card', card_product: product %}
+            {% endfor %}
+          </div>
+          <button class="fp-scroll-btn fp-scroll-btn--prev" aria-label="Anterior">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="fp-scroll-btn fp-scroll-btn--next" aria-label="Siguiente">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      {% else %}
+        <!-- Modo grilla normal -->
+        <div class="pcard-grid pcard-grid--home">
           {% for product in product_list limit: section.settings.products_count %}
             {% render 'product-card', card_product: product %}
-          {% else %}
-            <p class="fp-empty">Agrega productos o selecciona una colección para que aparezcan aquí.</p>
           {% endfor %}
         </div>
-        <button class="fp-scroll-btn fp-scroll-btn--prev" aria-label="Anterior">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-        <button class="fp-scroll-btn fp-scroll-btn--next" aria-label="Siguiente">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-      </div>
+      {% endif %}
     {% else %}
-      <!-- Modo grilla normal -->
-      <div class="pcard-grid pcard-grid--home">
-        {% for product in product_list limit: section.settings.products_count %}
-          {% render 'product-card', card_product: product %}
-        {% else %}
-          <p class="fp-empty" style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">
-            Selecciona una colección en la configuración de esta sección para mostrar productos.
-          </p>
-        {% endfor %}
+      <!-- Estado vacío bonito -->
+      <div class="fp-empty-state">
+        <div class="fp-empty-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        </div>
+        <h3 class="fp-empty-title">Tus productos aparecerán aquí</h3>
+        <p class="fp-empty-desc">Agrega productos a tu tienda o selecciona una colección en la configuración de esta sección.</p>
+        <a href="/admin/products/new" class="fp-empty-btn">Agregar productos</a>
       </div>
     {% endif %}
 
