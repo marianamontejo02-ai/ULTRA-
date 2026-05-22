@@ -9,7 +9,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: '**.myshopify.com',
+        hostname: 'x0960f-c1.myshopify.com',
       },
     ],
   },
