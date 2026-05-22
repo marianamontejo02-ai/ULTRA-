@@ -19,7 +19,12 @@ export async function FeaturedProducts({
   limit = 8,
   viewAllHref = '/colecciones',
 }: FeaturedProductsProps) {
-  const products = await getProducts({ first: limit, sortKey });
+  let products = [];
+  try {
+    products = await getProducts({ first: limit, sortKey });
+  } catch {
+    products = [];
+  }
 
   return (
     <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
