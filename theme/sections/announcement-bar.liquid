@@ -1,4 +1,4 @@
-{% if section.settings.show_bar %}
+{% if section.settings.show_bar and section.blocks.size > 0 %}
 <div id="announcement-bar" class="announcement-bar" role="region" aria-label="Anuncio">
   {% for block in section.blocks %}
     <span class="announcement-bar__text" data-announcement style="display:none">

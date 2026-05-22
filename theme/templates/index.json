@@ -4,22 +4,44 @@
       "type": "hero",
       "settings": {
         "layout": "split",
-        "eyebrow": "Nueva colección",
+        "eyebrow": "Nueva colección 2025",
         "title": "Tu belleza, [acento]accesible[/acento] y moderna.",
         "subtitle": "Maquillaje, cuidado capilar y dermocosméticos para mujeres colombianas.",
         "btn1_text": "Ver productos",
         "btn2_text": "Ver ofertas",
         "show_trust": true
-      }
+      },
+      "blocks": {
+        "stat1": { "type": "stat", "settings": { "value": "+10.000", "label": "clientas felices" } },
+        "stat2": { "type": "stat", "settings": { "value": "+500", "label": "productos" } },
+        "stat3": { "type": "stat", "settings": { "value": "4.9★", "label": "calificación" } }
+      },
+      "block_order": ["stat1", "stat2", "stat3"]
     },
-    "categories": { "type": "category-grid" },
+    "categories": {
+      "type": "category-grid",
+      "settings": {
+        "eyebrow": "Explora por categoría",
+        "title": "¿Qué buscas hoy?",
+        "subtitle": ""
+      },
+      "blocks": {
+        "cat1": { "type": "category", "settings": { "name": "Cuidado Capilar", "subtitle": "Shampoos, mascarillas y tratamientos", "cta_text": "Ver todo", "fallback_color": "#2d1408", "overlay": 45 } },
+        "cat2": { "type": "category", "settings": { "name": "Maquillaje", "subtitle": "Base, labiales y delineadores", "cta_text": "Ver todo", "fallback_color": "#6b1a1a", "overlay": 45 } },
+        "cat3": { "type": "category", "settings": { "name": "Dermocosméticos", "subtitle": "Tratamientos especializados", "cta_text": "Ver todo", "fallback_color": "#1a3a4a", "overlay": 45 } },
+        "cat4": { "type": "category", "settings": { "name": "Skin Care", "subtitle": "Sérum, cremas e hidratación", "cta_text": "Ver todo", "fallback_color": "#2a3a1a", "overlay": 45 } },
+        "cat5": { "type": "category", "settings": { "name": "Cuerpo y Baño", "subtitle": "Cremas corporales y exfoliantes", "cta_text": "Ver todo", "fallback_color": "#3a2a4a", "overlay": 45 } },
+        "cat6": { "type": "category", "settings": { "name": "Accesorios", "subtitle": "Brochas, esponjas y herramientas", "cta_text": "Ver todo", "fallback_color": "#1a1a2a", "overlay": 45 } }
+      },
+      "block_order": ["cat1", "cat2", "cat3", "cat4", "cat5", "cat6"]
+    },
     "featured": {
       "type": "featured-products",
       "settings": {
         "eyebrow": "Lo más vendido",
         "title": "Más vendidos",
         "subtitle": "Los favoritos de nuestra comunidad",
-        "btn_text": "Ver todos",
+        "btn_text": "Ver todos los productos",
         "products_count": 8,
         "scroll_mode": false,
         "bg_color": "#ffffff",
@@ -42,7 +64,25 @@
         "padding_bottom": 64
       }
     },
-    "reviews": { "type": "social-proof" }
+    "reviews": {
+      "type": "social-proof",
+      "settings": {
+        "eyebrow": "Testimonios reales",
+        "title": "+10.000 mujeres ya confían en nosotras",
+        "show_rating": true,
+        "rating_text": "4.9 / 5.0",
+        "bg_color": "#ffffff",
+        "padding_top": 64,
+        "padding_bottom": 64
+      },
+      "blocks": {
+        "rv1": { "type": "review", "settings": { "text": "Increíble calidad y rapidez en el envío. ¡Ya hice mi segunda compra!", "stars": 5, "name": "Valentina M.", "city": "Bogotá", "product": "Sérum Vitamina C", "color": "#E8621A" } },
+        "rv2": { "type": "review", "settings": { "text": "Llevo 3 meses comprando aquí y nunca me han fallado. Llegan perfectos.", "stars": 5, "name": "Camila R.", "city": "Medellín", "product": "Kit Capilar OGX", "color": "#ef4444" } },
+        "rv3": { "type": "review", "settings": { "text": "Por fin una tienda con dermocosméticos colombianos a buen precio.", "stars": 5, "name": "Daniela O.", "city": "Cali", "product": "Tónico Savar", "color": "#8b5cf6" } },
+        "rv4": { "type": "review", "settings": { "text": "El maquillaje es 100% original. Muy profesionales y súper atentos.", "stars": 5, "name": "Luisa F.", "city": "Barranquilla", "product": "Base L'Oréal", "color": "#f59e0b" } }
+      },
+      "block_order": ["rv1", "rv2", "rv3", "rv4"]
+    }
   },
   "order": ["hero", "categories", "featured", "brand-bar", "novedades", "reviews"]
 }

@@ -53,15 +53,13 @@
 </div>
 
 <script>
-  // Show footer when cart has items
-  const _origRender = Cart && Cart.renderItems;
   document.addEventListener('DOMContentLoaded', function() {
-    const footer = document.getElementById('cart-footer');
-    if (!footer) return;
-    const observer = new MutationObserver(function() {
-      const hasItems = document.querySelector('.cart-item');
-      footer.style.display = hasItems ? '' : 'none';
+    var footer = document.getElementById('cart-footer');
+    var body   = document.getElementById('cart-body');
+    if (!footer || !body) return;
+    var observer = new MutationObserver(function() {
+      footer.style.display = document.querySelector('.cart-item') ? '' : 'none';
     });
-    observer.observe(document.getElementById('cart-body'), { childList: true, subtree: true });
+    observer.observe(body, { childList: true, subtree: true });
   });
 </script>
