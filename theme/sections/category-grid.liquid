@@ -1,18 +1,44 @@
-<section class="section">
+<section class="section cat-section">
   <div class="container">
     <div class="section-head section-head--center">
+      <p class="section-eyebrow">{{ section.settings.eyebrow | default: 'Nuestras categorías' }}</p>
       <h2 class="section-title">{{ section.settings.title }}</h2>
       {% if section.settings.subtitle != blank %}
         <p class="section-subtitle">{{ section.settings.subtitle }}</p>
       {% endif %}
     </div>
 
-    <div class="category-grid">
+    <div class="cat-grid">
       {% for block in section.blocks %}
-        <a href="{{ block.settings.url }}" class="category-card" {{ block.shopify_attributes }}>
-          <span class="category-card__emoji">{{ block.settings.emoji }}</span>
-          <span class="category-card__name">{{ block.settings.name }}</span>
-          <span class="category-card__sub">{{ block.settings.subtitle }}</span>
+        <a href="{{ block.settings.url }}" class="cat-card" {{ block.shopify_attributes }}>
+          <!-- Background image -->
+          <div class="cat-card__bg">
+            {% if block.settings.image != blank %}
+              <img
+                src="{{ block.settings.image | image_url: width: 600 }}"
+                alt="{{ block.settings.name | escape }}"
+                class="cat-card__img"
+                loading="lazy"
+                width="600"
+                height="700"
+              >
+            {% else %}
+              <div class="cat-card__img-placeholder"></div>
+            {% endif %}
+          </div>
+
+          <!-- Gradient overlay -->
+          <div class="cat-card__overlay"></div>
+
+          <!-- Content -->
+          <div class="cat-card__content">
+            <span class="cat-card__name">{{ block.settings.name }}</span>
+            <span class="cat-card__sub">{{ block.settings.subtitle }}</span>
+            <span class="cat-card__cta">
+              Ver todo
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </span>
+          </div>
         </a>
       {% endfor %}
     </div>
@@ -23,30 +49,31 @@
 {
   "name": "Cuadrícula de categorías",
   "settings": [
-    { "type": "text", "id": "title",    "label": "Título",    "default": "Encuentra lo que buscas" },
-    { "type": "text", "id": "subtitle", "label": "Subtítulo", "default": "Todo lo que necesitas para tu rutina de belleza" }
+    { "type": "text", "id": "eyebrow",  "label": "Texto eyebrow",  "default": "Nuestras categorías" },
+    { "type": "text", "id": "title",    "label": "Título",         "default": "Encuentra lo que buscas" },
+    { "type": "text", "id": "subtitle", "label": "Subtítulo",      "default": "Todo lo que necesitas para tu rutina de belleza" }
   ],
   "blocks": [
     {
       "type": "category",
       "name": "Categoría",
       "settings": [
-        { "type": "text", "id": "emoji",    "label": "Emoji",         "default": "💄" },
-        { "type": "text", "id": "name",     "label": "Nombre",        "default": "Maquillaje" },
-        { "type": "text", "id": "subtitle", "label": "Descripción",   "default": "Base, labiales, delineadores" },
-        { "type": "url",  "id": "url",      "label": "Enlace" }
+        { "type": "image_picker", "id": "image",    "label": "Foto de categoría" },
+        { "type": "text",         "id": "name",     "label": "Nombre",          "default": "Maquillaje" },
+        { "type": "text",         "id": "subtitle", "label": "Descripción",     "default": "Base, labiales, delineadores" },
+        { "type": "url",          "id": "url",      "label": "Enlace" }
       ]
     }
   ],
   "presets": [{
     "name": "Cuadrícula de categorías",
     "blocks": [
-      { "type": "category", "settings": { "emoji": "💆‍♀️", "name": "Cuidado Capilar",   "subtitle": "Shampoos, mascarillas y más" } },
-      { "type": "category", "settings": { "emoji": "💄",   "name": "Maquillaje",        "subtitle": "Base, labiales, delineadores" } },
-      { "type": "category", "settings": { "emoji": "✨",   "name": "Dermocosméticos",   "subtitle": "Tratamientos especializados" } },
-      { "type": "category", "settings": { "emoji": "🌿",   "name": "Skin Care",         "subtitle": "Sérum, cremas e hidratación" } },
-      { "type": "category", "settings": { "emoji": "🛁",   "name": "Cuerpo & Baño",     "subtitle": "Cremas corporales y más" } },
-      { "type": "category", "settings": { "emoji": "💅",   "name": "Accesorios",        "subtitle": "Uñas, brochas y herramientas" } }
+      { "type": "category", "settings": { "name": "Cuidado Capilar",   "subtitle": "Shampoos, mascarillas y tratamientos" } },
+      { "type": "category", "settings": { "name": "Maquillaje",        "subtitle": "Base, labiales y delineadores" } },
+      { "type": "category", "settings": { "name": "Dermocosméticos",   "subtitle": "Tratamientos especializados" } },
+      { "type": "category", "settings": { "name": "Skin Care",         "subtitle": "Sérum, cremas e hidratación" } },
+      { "type": "category", "settings": { "name": "Cuerpo y Baño",     "subtitle": "Cremas corporales y exfoliantes" } },
+      { "type": "category", "settings": { "name": "Accesorios",        "subtitle": "Brochas, esponjas y herramientas" } }
     ]
   }]
 }
