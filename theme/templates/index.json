@@ -1,6 +1,17 @@
 {
   "sections": {
-    "hero": { "type": "hero" },
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "layout": "split",
+        "eyebrow": "Nueva colección",
+        "title": "Tu belleza, [acento]accesible[/acento] y moderna.",
+        "subtitle": "Maquillaje, cuidado capilar y dermocosméticos para mujeres colombianas.",
+        "btn1_text": "Ver productos",
+        "btn2_text": "Ver ofertas",
+        "show_trust": true
+      }
+    },
     "categories": { "type": "category-grid" },
     "featured": {
       "type": "featured-products",
@@ -8,7 +19,12 @@
         "eyebrow": "Lo más vendido",
         "title": "Más vendidos",
         "subtitle": "Los favoritos de nuestra comunidad",
-        "products_count": 8
+        "btn_text": "Ver todos",
+        "products_count": 8,
+        "scroll_mode": false,
+        "bg_color": "#ffffff",
+        "padding_top": 64,
+        "padding_bottom": 64
       }
     },
     "brand-bar": { "type": "brand-bar" },
@@ -18,7 +34,12 @@
         "eyebrow": "Recién llegados",
         "title": "Novedades",
         "subtitle": "Lo último en nuestra tienda",
-        "products_count": 4
+        "btn_text": "Ver novedades",
+        "products_count": 4,
+        "scroll_mode": false,
+        "bg_color": "#fafafa",
+        "padding_top": 64,
+        "padding_bottom": 64
       }
     },
     "reviews": { "type": "social-proof" }

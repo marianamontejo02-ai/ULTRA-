@@ -624,6 +624,52 @@ ul { list-style: none; }
 .pcard__live { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-muted); margin-top: 3px; }
 .pcard__live-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; flex-shrink: 0; animation: buyerPulse 2s ease-in-out infinite; }
 
+/* ─── Featured Products extras ───────────────────────────── */
+/* Home grid — 4 cols desktop */
+.pcard-grid--home { background: var(--border); }
+@media(min-width:1024px) { .pcard-grid--home { grid-template-columns: repeat(4, 1fr); } }
+
+/* Scroll carousel mode */
+.fp-scroll-wrap { position: relative; }
+.fp-scroll-track {
+  display: flex; gap: 1px; overflow-x: auto; scroll-snap-type: x mandatory;
+  scrollbar-width: none; background: var(--border);
+}
+.fp-scroll-track::-webkit-scrollbar { display: none; }
+.fp-scroll-track .pcard {
+  flex: 0 0 calc(50% - 1px); scroll-snap-align: start;
+}
+@media(min-width:640px)  { .fp-scroll-track .pcard { flex: 0 0 calc(33.33% - 1px); } }
+@media(min-width:1024px) { .fp-scroll-track .pcard { flex: 0 0 calc(25% - 1px); } }
+
+.fp-scroll-btn {
+  display: none; position: absolute; top: 50%; transform: translateY(-50%);
+  width: 40px; height: 40px; border-radius: 50%;
+  background: #fff; border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-md); z-index: 2;
+  align-items: center; justify-content: center;
+  transition: all .15s;
+}
+.fp-scroll-wrap:hover .fp-scroll-btn { display: flex; }
+.fp-scroll-btn:hover { background: var(--ultra); color: #fff; border-color: var(--ultra); }
+.fp-scroll-btn--prev { left: -16px; }
+.fp-scroll-btn--next { right: -16px; }
+
+/* Bottom CTA */
+.fp-cta-wrap { text-align: center; margin-top: 36px; }
+.fp-cta-btn {
+  display: inline-flex; align-items: center;
+  padding: 14px 40px; border: 2px solid #111; border-radius: var(--radius-full);
+  font-size: 14px; font-weight: 700; color: #111;
+  transition: all .2s;
+}
+.fp-cta-btn:hover { background: #111; color: #fff; }
+
+.cat-card__tag {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .1em; color: rgba(255,255,255,.7); margin-bottom: 4px;
+}
+
 /* ─── Brand Bar ──────────────────────────────────────────── */
 .brand-bar { padding: 40px 0; background: var(--bg-soft); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); overflow: hidden; }
 .brand-bar__label { text-align: center; font-size: 11px; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: .12em; margin-bottom: 20px; }

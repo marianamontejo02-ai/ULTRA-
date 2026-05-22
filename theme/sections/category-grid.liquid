@@ -1,47 +1,59 @@
-<section class="section cat-section">
+<section class="section cat-section" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;background:{{ section.settings.bg_color }};">
   <div class="container">
-    <div class="section-head section-head--center">
-      <p class="section-eyebrow">{{ section.settings.eyebrow | default: 'Nuestras categorías' }}</p>
-      <h2 class="section-title">{{ section.settings.title }}</h2>
-      {% if section.settings.subtitle != blank %}
-        <p class="section-subtitle">{{ section.settings.subtitle }}</p>
-      {% endif %}
-    </div>
+
+    {% if section.settings.title != blank or section.settings.eyebrow != blank %}
+      <div class="section-head section-head--center">
+        {% if section.settings.eyebrow != blank %}
+          <p class="section-eyebrow">{{ section.settings.eyebrow }}</p>
+        {% endif %}
+        {% if section.settings.title != blank %}
+          <h2 class="section-title">{{ section.settings.title }}</h2>
+        {% endif %}
+        {% if section.settings.subtitle != blank %}
+          <p class="section-subtitle">{{ section.settings.subtitle }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
 
     <div class="cat-grid">
       {% for block in section.blocks %}
-        <a href="{{ block.settings.url }}" class="cat-card" {{ block.shopify_attributes }}>
-          <!-- Background image -->
+        <a
+          href="{{ block.settings.url | default: '#' }}"
+          class="cat-card"
+          style="aspect-ratio:{{ block.settings.aspect_ratio | default: '3/4' }};"
+          {{ block.shopify_attributes }}
+        >
           <div class="cat-card__bg">
             {% if block.settings.image != blank %}
               <img
-                src="{{ block.settings.image | image_url: width: 600 }}"
+                src="{{ block.settings.image | image_url: width: 700 }}"
                 alt="{{ block.settings.name | escape }}"
                 class="cat-card__img"
                 loading="lazy"
-                width="600"
-                height="700"
+                width="700" height="900"
               >
             {% else %}
-              <div class="cat-card__img-placeholder"></div>
+              <div class="cat-card__img-placeholder" style="background:{{ block.settings.fallback_color | default: '#2d1408' }}"></div>
             {% endif %}
           </div>
-
-          <!-- Gradient overlay -->
-          <div class="cat-card__overlay"></div>
-
-          <!-- Content -->
+          <div class="cat-card__overlay" style="--overlay-strength:{{ block.settings.overlay | default: 50 | divided_by: 100.0 }}"></div>
           <div class="cat-card__content">
+            {% if block.settings.tag != blank %}
+              <span class="cat-card__tag">{{ block.settings.tag }}</span>
+            {% endif %}
             <span class="cat-card__name">{{ block.settings.name }}</span>
-            <span class="cat-card__sub">{{ block.settings.subtitle }}</span>
+            {% if block.settings.subtitle != blank %}
+              <span class="cat-card__sub">{{ block.settings.subtitle }}</span>
+            {% endif %}
             <span class="cat-card__cta">
-              Ver todo
+              {{ block.settings.cta_text | default: 'Ver todo' }}
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </span>
           </div>
         </a>
       {% endfor %}
     </div>
+
   </div>
 </section>
 
@@ -49,19 +61,38 @@
 {
   "name": "Cuadrícula de categorías",
   "settings": [
-    { "type": "text", "id": "eyebrow",  "label": "Texto eyebrow",  "default": "Nuestras categorías" },
-    { "type": "text", "id": "title",    "label": "Título",         "default": "Encuentra lo que buscas" },
-    { "type": "text", "id": "subtitle", "label": "Subtítulo",      "default": "Todo lo que necesitas para tu rutina de belleza" }
+    { "type": "text",   "id": "eyebrow",  "label": "Texto eyebrow",  "default": "" },
+    { "type": "text",   "id": "title",    "label": "Título",          "default": "" },
+    { "type": "text",   "id": "subtitle", "label": "Subtítulo",       "default": "" },
+    { "type": "color",  "id": "bg_color", "label": "Color de fondo",  "default": "#fafafa" },
+    { "type": "range",  "id": "padding_top",    "label": "Espacio superior", "min": 0, "max": 120, "step": 8, "default": 56 },
+    { "type": "range",  "id": "padding_bottom", "label": "Espacio inferior", "min": 0, "max": 120, "step": 8, "default": 56 }
   ],
   "blocks": [
     {
       "type": "category",
-      "name": "Categoría",
+      "name": "Tarjeta de categoría",
       "settings": [
-        { "type": "image_picker", "id": "image",    "label": "Foto de categoría" },
-        { "type": "text",         "id": "name",     "label": "Nombre",          "default": "Maquillaje" },
-        { "type": "text",         "id": "subtitle", "label": "Descripción",     "default": "Base, labiales, delineadores" },
-        { "type": "url",          "id": "url",      "label": "Enlace" }
+        { "type": "image_picker", "id": "image",         "label": "Foto de categoría" },
+        { "type": "color",        "id": "fallback_color","label": "Color si no hay foto",  "default": "#1a1a1a" },
+        { "type": "text",         "id": "tag",           "label": "Etiqueta pequeña (opcional)", "default": "" },
+        { "type": "text",         "id": "name",          "label": "Nombre de categoría",   "default": "Maquillaje" },
+        { "type": "text",         "id": "subtitle",      "label": "Descripción corta",      "default": "Base, labiales, delineadores" },
+        { "type": "text",         "id": "cta_text",      "label": "Texto del enlace",       "default": "Ver todo" },
+        { "type": "url",          "id": "url",           "label": "Enlace al hacer clic" },
+        { "type": "range",        "id": "overlay",       "label": "Oscuridad del overlay (%)", "min": 0, "max": 80, "step": 5, "default": 50 },
+        {
+          "type": "select",
+          "id": "aspect_ratio",
+          "label": "Proporción de la tarjeta",
+          "options": [
+            { "value": "3/4",  "label": "3:4 — Vertical (por defecto)" },
+            { "value": "1/1",  "label": "1:1 — Cuadrada" },
+            { "value": "4/3",  "label": "4:3 — Horizontal" },
+            { "value": "16/9", "label": "16:9 — Panorámica" }
+          ],
+          "default": "3/4"
+        }
       ]
     }
   ],
