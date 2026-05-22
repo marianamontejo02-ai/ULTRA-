@@ -1,0 +1,53 @@
+<section class="section">
+  <div class="container">
+    <div class="section-head section-head--center">
+      <h2 class="section-title">{{ section.settings.title }}</h2>
+      {% if section.settings.subtitle != blank %}
+        <p class="section-subtitle">{{ section.settings.subtitle }}</p>
+      {% endif %}
+    </div>
+
+    <div class="category-grid">
+      {% for block in section.blocks %}
+        <a href="{{ block.settings.url }}" class="category-card" {{ block.shopify_attributes }}>
+          <span class="category-card__emoji">{{ block.settings.emoji }}</span>
+          <span class="category-card__name">{{ block.settings.name }}</span>
+          <span class="category-card__sub">{{ block.settings.subtitle }}</span>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Cuadrícula de categorías",
+  "settings": [
+    { "type": "text", "id": "title",    "label": "Título",    "default": "Encuentra lo que buscas" },
+    { "type": "text", "id": "subtitle", "label": "Subtítulo", "default": "Todo lo que necesitas para tu rutina de belleza" }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Categoría",
+      "settings": [
+        { "type": "text", "id": "emoji",    "label": "Emoji",         "default": "💄" },
+        { "type": "text", "id": "name",     "label": "Nombre",        "default": "Maquillaje" },
+        { "type": "text", "id": "subtitle", "label": "Descripción",   "default": "Base, labiales, delineadores" },
+        { "type": "url",  "id": "url",      "label": "Enlace" }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Cuadrícula de categorías",
+    "blocks": [
+      { "type": "category", "settings": { "emoji": "💆‍♀️", "name": "Cuidado Capilar",   "subtitle": "Shampoos, mascarillas y más" } },
+      { "type": "category", "settings": { "emoji": "💄",   "name": "Maquillaje",        "subtitle": "Base, labiales, delineadores" } },
+      { "type": "category", "settings": { "emoji": "✨",   "name": "Dermocosméticos",   "subtitle": "Tratamientos especializados" } },
+      { "type": "category", "settings": { "emoji": "🌿",   "name": "Skin Care",         "subtitle": "Sérum, cremas e hidratación" } },
+      { "type": "category", "settings": { "emoji": "🛁",   "name": "Cuerpo & Baño",     "subtitle": "Cremas corporales y más" } },
+      { "type": "category", "settings": { "emoji": "💅",   "name": "Accesorios",        "subtitle": "Uñas, brochas y herramientas" } }
+    ]
+  }]
+}
+{% endschema %}

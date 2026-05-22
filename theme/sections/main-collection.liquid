@@ -1,0 +1,80 @@
+<div class="container" style="padding-top:32px;padding-bottom:64px">
+  <nav class="breadcrumb" aria-label="Migas de pan">
+    <a href="{{ routes.root_url }}">Inicio</a>
+    <span>/</span>
+    <a href="{{ routes.collections_url }}">Colecciones</a>
+    <span>/</span>
+    <span>{{ collection.title }}</span>
+  </nav>
+
+  <div class="collection-header">
+    <div class="collection-toolbar">
+      <div>
+        <h1 class="collection-title">{{ collection.title }}</h1>
+        {% if collection.description != blank %}
+          <p class="collection-desc">{{ collection.description }}</p>
+        {% endif %}
+        <p class="collection-count">{{ collection.products_count }} productos</p>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:8px">
+        <label for="sort-by" style="font-size:13px;color:var(--text-muted);white-space:nowrap">Ordenar:</label>
+        <select id="sort-by" class="sort-select" onchange="location.href='?sort_by='+this.value">
+          {% assign sort_options = 'manual,best-selling,created-descending,price-ascending,price-descending,title-ascending' | split: ',' %}
+          {% assign sort_labels  = 'Destacados,Más vendidos,Más recientes,Precio: menor a mayor,Precio: mayor a menor,A – Z' | split: ',' %}
+          {% for opt in sort_options %}
+            <option value="{{ opt }}" {% if collection.sort_by == opt %}selected{% endif %}>
+              {{ sort_labels[forloop.index0] }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Brand filter pills -->
+  {% assign all_vendors = collection.products | map: 'vendor' | uniq | sort %}
+  {% if all_vendors.size > 1 %}
+    <div class="brand-filters">
+      <span class="brand-filter-label">Marca:</span>
+      <button class="brand-pill {% unless current_tags contains 'vendor' %}active{% endunless %}" data-vendor="">Todas</button>
+      {% for vendor in all_vendors %}
+        {% assign vendor_param = vendor | url_encode %}
+        <button
+          class="brand-pill {% if request.url contains vendor_param %}active{% endif %}"
+          data-vendor="{{ vendor }}"
+        >{{ vendor }}</button>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- Product grid -->
+  {% if collection.products.size > 0 %}
+    <div class="product-grid">
+      {% for product in collection.products %}
+        {% render 'product-card', card_product: product %}
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if paginate.pages > 1 %}
+      <div style="text-align:center;margin-top:48px">
+        {{ paginate | default_pagination | replace: '&laquo; Previous', '← Anterior' | replace: 'Next &raquo;', 'Siguiente →' }}
+      </div>
+    {% endif %}
+  {% else %}
+    <div style="text-align:center;padding:80px 20px;color:var(--text-muted)">
+      <p style="font-size:18px;font-weight:600;margin-bottom:8px">No hay productos en esta colección</p>
+      <p style="font-size:14px;margin-bottom:24px">Agrega productos desde tu Shopify Admin</p>
+      <a href="{{ routes.collections_url }}" class="btn btn-primary">Ver otras colecciones</a>
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Página de colección",
+  "settings": [],
+  "presets": [{ "name": "Página de colección" }]
+}
+{% endschema %}

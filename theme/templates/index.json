@@ -1,0 +1,27 @@
+{
+  "sections": {
+    "hero": { "type": "hero" },
+    "categories": { "type": "category-grid" },
+    "featured": {
+      "type": "featured-products",
+      "settings": {
+        "eyebrow": "Lo más vendido",
+        "title": "Más vendidos",
+        "subtitle": "Los favoritos de nuestra comunidad",
+        "products_count": 8
+      }
+    },
+    "brand-bar": { "type": "brand-bar" },
+    "novedades": {
+      "type": "featured-products",
+      "settings": {
+        "eyebrow": "Recién llegados",
+        "title": "Novedades",
+        "subtitle": "Lo último en nuestra tienda",
+        "products_count": 4
+      }
+    },
+    "reviews": { "type": "social-proof" }
+  },
+  "order": ["hero", "categories", "featured", "brand-bar", "novedades", "reviews"]
+}

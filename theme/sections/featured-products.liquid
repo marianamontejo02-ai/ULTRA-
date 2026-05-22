@@ -1,0 +1,47 @@
+<section class="section" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;">
+  <div class="container">
+    <div class="section-head section-head--split">
+      <div>
+        <p class="section-eyebrow">{{ section.settings.eyebrow }}</p>
+        <h2 class="section-title">{{ section.settings.title }}</h2>
+        {% if section.settings.subtitle != blank %}
+          <p class="section-subtitle">{{ section.settings.subtitle }}</p>
+        {% endif %}
+      </div>
+      {% if section.settings.view_all_url != blank %}
+        <a href="{{ section.settings.view_all_url }}" class="see-all-link">
+          Ver todos
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      {% endif %}
+    </div>
+
+    {% assign product_list = section.settings.collection.products | default: collections['all'].products %}
+    <div class="product-grid">
+      {% for product in product_list limit: section.settings.products_count %}
+        {% render 'product-card', card_product: product %}
+      {% else %}
+        <p style="color:var(--text-muted);grid-column:1/-1;text-align:center;padding:40px 0">
+          Agrega productos a la colección "{{ section.settings.collection.title }}" para que aparezcan aquí.
+        </p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Productos destacados",
+  "settings": [
+    { "type": "text",       "id": "eyebrow",        "label": "Texto superior",  "default": "Lo más vendido" },
+    { "type": "text",       "id": "title",          "label": "Título",          "default": "Más vendidos" },
+    { "type": "text",       "id": "subtitle",       "label": "Subtítulo",       "default": "Los favoritos de nuestra comunidad" },
+    { "type": "collection", "id": "collection",     "label": "Colección" },
+    { "type": "range",      "id": "products_count", "label": "Número de productos", "min": 2, "max": 12, "step": 1, "default": 8 },
+    { "type": "url",        "id": "view_all_url",   "label": "Enlace ver todos" },
+    { "type": "range",      "id": "padding_top",    "label": "Relleno superior", "min": 0, "max": 100, "step": 4, "default": 64 },
+    { "type": "range",      "id": "padding_bottom", "label": "Relleno inferior", "min": 0, "max": 100, "step": 4, "default": 64 }
+  ],
+  "presets": [{ "name": "Productos destacados" }]
+}
+{% endschema %}

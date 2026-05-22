@@ -1,0 +1,35 @@
+{% assign brands = 'L&apos;Oréal 🇫🇷,Revlon 🇺🇸,OGX 🇺🇸,Tío Nacho 🇨🇴,Savar 🇨🇴,Pantene 🌎,Sedal 🌎,Wella 🇩🇪,Kérastase 🇫🇷,Weleda 🇩🇪,Natura 🇧🇷,Payot 🇧🇷,Anyeluz 🇨🇴,Atenea 🇨🇴,Montoc 🇨🇴,Milagros 🇨🇴' | split: ',' %}
+
+<div class="brand-bar">
+  <p class="brand-bar__label">Marcas que amamos y distribuimos</p>
+  <div style="overflow:hidden">
+    <div class="brand-bar__track">
+      {% for brand in brands %}
+        {% assign parts = brand | split: ' ' %}
+        {% assign flag = parts | last %}
+        {% assign name = brand | remove: flag | strip %}
+        <div class="brand-bar__item">
+          <span class="brand-bar__flag">{{ flag }}</span>
+          <span class="brand-bar__name">{{ name }}</span>
+        </div>
+      {% endfor %}
+      {% for brand in brands %}
+        {% assign parts = brand | split: ' ' %}
+        {% assign flag = parts | last %}
+        {% assign name = brand | remove: flag | strip %}
+        <div class="brand-bar__item">
+          <span class="brand-bar__flag">{{ flag }}</span>
+          <span class="brand-bar__name">{{ name }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Barra de marcas",
+  "settings": [],
+  "presets": [{ "name": "Barra de marcas" }]
+}
+{% endschema %}

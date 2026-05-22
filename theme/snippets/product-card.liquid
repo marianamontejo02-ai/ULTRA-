@@ -1,0 +1,86 @@
+{% assign card_product = card_product | default: product %}
+{% assign first_variant = card_product.selected_or_first_available_variant %}
+{% assign has_discount = false %}
+{% if first_variant.compare_at_price > first_variant.price %}
+  {% assign has_discount = true %}
+  {% assign discount_pct = first_variant.compare_at_price | minus: first_variant.price | times: 100 | divided_by: first_variant.compare_at_price | round %}
+{% endif %}
+
+<div class="product-card">
+  <div class="product-card__media">
+    <a href="{{ card_product.url }}" aria-label="{{ card_product.title }}">
+      {% if card_product.featured_image %}
+        <img
+          src="{{ card_product.featured_image | image_url: width: 600 }}"
+          alt="{{ card_product.featured_image.alt | escape }}"
+          class="product-card__image"
+          loading="lazy"
+          width="600"
+          height="750"
+        >
+        {% if card_product.images[1] %}
+          <img
+            src="{{ card_product.images[1] | image_url: width: 600 }}"
+            alt="{{ card_product.images[1].alt | escape }}"
+            class="product-card__image--secondary"
+            loading="lazy"
+            width="600"
+            height="750"
+          >
+        {% endif %}
+      {% else %}
+        <div class="product-card__placeholder">✨</div>
+      {% endif %}
+    </a>
+
+    <!-- Badges -->
+    <div class="product-card__badges">
+      {% unless card_product.available %}
+        <span class="badge badge-soldout">Agotado</span>
+      {% endunless %}
+      {% if has_discount %}
+        <span class="badge badge-sale">-{{ discount_pct }}%</span>
+      {% elsif card_product.tags contains 'nuevo' or card_product.tags contains 'new' %}
+        <span class="badge badge-new">Nuevo</span>
+      {% elsif card_product.tags contains 'bestseller' %}
+        <span class="badge badge-hot">⭐ Top</span>
+      {% endif %}
+    </div>
+
+    <!-- Wishlist -->
+    <button class="product-card__wishlist" data-wishlist aria-label="Agregar a favoritos">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    </button>
+
+    <!-- Quick add -->
+    {% if card_product.available %}
+      <button
+        class="product-card__quick-add"
+        data-quick-add="{{ first_variant.id }}"
+        data-text="Agregar al carrito"
+        aria-label="Agregar {{ card_product.title }} al carrito"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        Agregar al carrito
+      </button>
+    {% endif %}
+  </div>
+
+  <div class="product-card__info">
+    <span class="product-card__vendor">{{ card_product.vendor }}</span>
+    <a href="{{ card_product.url }}" class="product-card__title">{{ card_product.title }}</a>
+
+    {% if first_variant.inventory_quantity <= 5 and first_variant.inventory_quantity > 0 %}
+      <p class="product-card__low-stock">⚡ ¡Solo quedan {{ first_variant.inventory_quantity }}!</p>
+    {% endif %}
+
+    <div class="product-card__price">
+      <span class="product-card__price-current {% if has_discount %}sale{% endif %}">
+        {{ first_variant.price | money }}
+      </span>
+      {% if has_discount %}
+        <span class="product-card__price-compare">{{ first_variant.compare_at_price | money }}</span>
+      {% endif %}
+    </div>
+  </div>
+</div>

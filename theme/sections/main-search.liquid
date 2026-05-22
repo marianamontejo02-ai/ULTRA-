@@ -1,0 +1,88 @@
+<div class="search-page section-padding">
+  <div class="container">
+    <div class="search-header">
+      <h1 class="search-title">
+        {% if search.performed %}
+          {% if search.results_count == 0 %}
+            Sin resultados para "{{ search.terms | escape }}"
+          {% else %}
+            {{ search.results_count }} resultado{% if search.results_count != 1 %}s{% endif %} para "{{ search.terms | escape }}"
+          {% endif %}
+        {% else %}
+          Buscar en la tienda
+        {% endif %}
+      </h1>
+
+      <form action="{{ routes.search_url }}" method="get" role="search" class="search-form-main">
+        <div class="search-input-wrap">
+          <input
+            type="search"
+            name="q"
+            value="{{ search.terms | escape }}"
+            placeholder="Buscar productos..."
+            class="search-input-main"
+            aria-label="Buscar"
+            autofocus
+          >
+          <input type="hidden" name="type" value="product">
+          <button type="submit" class="search-submit-btn" aria-label="Buscar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    {% if search.performed %}
+      {% if search.results_count > 0 %}
+        <div class="products-grid">
+          {% for item in search.results %}
+            {% if item.object_type == 'product' %}
+              {% assign product = item %}
+              {% render 'product-card', product: product %}
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        {% if paginate.pages > 1 %}
+          <div class="pagination">
+            {{ paginate | default_pagination }}
+          </div>
+        {% endif %}
+      {% else %}
+        <div class="search-empty">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <p>No encontramos productos para <strong>"{{ search.terms | escape }}"</strong></p>
+          <p class="search-empty-hint">Intenta con otro término o explora nuestras categorías</p>
+          <div class="search-suggestions">
+            <a href="/collections/capilar" class="btn-outline-sm">Capilar</a>
+            <a href="/collections/maquillaje" class="btn-outline-sm">Maquillaje</a>
+            <a href="/collections/dermocosmeticos" class="btn-outline-sm">Dermocosméticos</a>
+            <a href="/collections/skin-care" class="btn-outline-sm">Skin Care</a>
+          </div>
+        </div>
+      {% endif %}
+    {% else %}
+      <div class="search-popular">
+        <p class="search-popular-title">Búsquedas populares</p>
+        <div class="search-popular-tags">
+          <a href="{{ routes.search_url }}?q=shampoo&type=product" class="search-tag">Shampoo</a>
+          <a href="{{ routes.search_url }}?q=tratamiento&type=product" class="search-tag">Tratamiento</a>
+          <a href="{{ routes.search_url }}?q=tinte&type=product" class="search-tag">Tinte</a>
+          <a href="{{ routes.search_url }}?q=base+maquillaje&type=product" class="search-tag">Base maquillaje</a>
+          <a href="{{ routes.search_url }}?q=serum&type=product" class="search-tag">Sérum</a>
+          <a href="{{ routes.search_url }}?q=crema&type=product" class="search-tag">Crema</a>
+          <a href="{{ routes.search_url }}?q=labial&type=product" class="search-tag">Labial</a>
+          <a href="{{ routes.search_url }}?q=alisado&type=product" class="search-tag">Alisado</a>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Búsqueda",
+  "settings": [],
+  "presets": [{ "name": "Búsqueda" }]
+}
+{% endschema %}

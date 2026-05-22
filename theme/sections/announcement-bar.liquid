@@ -1,0 +1,40 @@
+{% if section.settings.show_bar %}
+<div id="announcement-bar" class="announcement-bar" role="region" aria-label="Anuncio">
+  {% for block in section.blocks %}
+    <span class="announcement-bar__text" data-announcement style="display:none">
+      {{ block.settings.text }}
+    </span>
+  {% endfor %}
+  <button id="announcement-close" class="announcement-bar__close" aria-label="Cerrar">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+</div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Barra de anuncios",
+  "settings": [
+    { "type": "checkbox", "id": "show_bar", "label": "Mostrar barra", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "Anuncio",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Texto del anuncio", "default": "🚚 Envío GRATIS en compras desde $150.000" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Barra de anuncios",
+      "blocks": [
+        { "type": "announcement", "settings": { "text": "🚚 Envío GRATIS en compras desde $150.000 a todo Colombia" } },
+        { "type": "announcement", "settings": { "text": "✨ Nuevas llegadas — ¡Descúbrelas!" } },
+        { "type": "announcement", "settings": { "text": "💳 Paga con Nequi, PSE o tarjeta — Hasta 12 cuotas sin interés" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

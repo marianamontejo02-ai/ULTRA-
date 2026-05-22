@@ -1,0 +1,96 @@
+{
+  "general": {
+    "search": {
+      "search": "Buscar",
+      "search_for": "Buscar en la tienda",
+      "no_results": "Sin resultados para",
+      "placeholder": "Buscar productos..."
+    },
+    "pagination": {
+      "previous": "Anterior",
+      "next": "Siguiente"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Agregar al carrito",
+      "buy_now": "Comprar ahora",
+      "sold_out": "Agotado",
+      "unavailable": "No disponible",
+      "quantity": "Cantidad",
+      "description": "Descripción",
+      "sale": "Oferta",
+      "new": "Nuevo",
+      "vendor": "Marca",
+      "low_stock": "¡Quedan pocas unidades!",
+      "price": {
+        "sale": "Precio de oferta",
+        "regular": "Precio regular",
+        "from": "Desde"
+      }
+    },
+    "general": {
+      "all_products": "Todos los productos"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Tu carrito",
+      "empty": "Tu carrito está vacío",
+      "continue_shopping": "Seguir comprando",
+      "checkout": "Finalizar compra",
+      "subtotal": "Subtotal",
+      "item": "producto",
+      "items": "productos",
+      "remove": "Eliminar"
+    },
+    "shipping": {
+      "free_shipping_at": "¡Envío gratis en compras mayores a",
+      "congrats": "¡Felicidades! Tienes envío gratis"
+    }
+  },
+  "collections": {
+    "general": {
+      "title": "Colecciones",
+      "all": "Todos",
+      "filter_by": "Filtrar",
+      "sort_by": "Ordenar por",
+      "sort_options": {
+        "featured": "Destacados",
+        "price_ascending": "Precio: menor a mayor",
+        "price_descending": "Precio: mayor a menor",
+        "title_ascending": "A–Z",
+        "title_descending": "Z–A",
+        "created_descending": "Más recientes",
+        "best_selling": "Más vendidos"
+      }
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "Mi cuenta"
+    },
+    "login": {
+      "title": "Iniciar sesión",
+      "password": "Contraseña",
+      "submit": "Entrar",
+      "forgot_password": "¿Olvidaste tu contraseña?"
+    },
+    "register": {
+      "title": "Crear cuenta",
+      "submit": "Registrarme"
+    }
+  },
+  "sections": {
+    "newsletter": {
+      "title": "Únete a la comunidad",
+      "submit": "Suscribirme"
+    }
+  },
+  "accessibility": {
+    "skip_to_content": "Ir al contenido",
+    "close": "Cerrar",
+    "open_menu": "Abrir menú",
+    "close_menu": "Cerrar menú"
+  }
+}

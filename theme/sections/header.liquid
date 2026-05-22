@@ -1,0 +1,209 @@
+{% assign brands_capilar      = 'Anyeluz,Atenea,Montoc,Milagros,OGX,Pantene,Sedal,Tío Nacho,Wella' | split: ',' %}
+{% assign brands_maquillaje   = "Anyeluz,Atenea,Milagros,L'Oréal,Revlon,Maybelline,NYX,Rimmel" | split: ',' %}
+{% assign brands_dermos       = 'Anyeluz,Atenea,Montoc,Milagros,Weleda,Savar,Natura,Payot' | split: ',' %}
+
+<header class="site-header" role="banner">
+  <div class="container">
+    <div class="header-inner">
+
+      <!-- Mobile toggle -->
+      <button id="menu-toggle" class="menu-toggle header-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
+        <span id="menu-icon" data-open="false">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-menu"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-close" style="display:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </span>
+      </button>
+
+      <!-- Logo -->
+      <a href="{{ routes.root_url }}" class="site-logo" aria-label="{{ shop.name }}">
+        <svg width="40" height="40" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="48" cy="48" r="47" fill="#E8621A"/>
+          <text x="48" y="54" text-anchor="middle" fill="white" font-size="28" font-weight="900" font-family="Arial Black, Arial, sans-serif" letter-spacing="-0.5">ULTRA</text>
+          <!-- Dot heart pattern -->
+          <g transform="translate(14,0) scale(0.72) translate(0,-62)">
+            <circle cx="31" cy="68" r="4" fill="white" opacity=".9"/><circle cx="31" cy="68" r="1.8" fill="#E8621A"/>
+            <circle cx="39" cy="68" r="4" fill="white" opacity=".9"/><circle cx="39" cy="68" r="1.8" fill="#E8621A"/>
+            <circle cx="57" cy="68" r="4" fill="white" opacity=".9"/><circle cx="57" cy="68" r="1.8" fill="#E8621A"/>
+            <circle cx="65" cy="68" r="4" fill="white" opacity=".9"/><circle cx="65" cy="68" r="1.8" fill="#E8621A"/>
+            <circle cx="27" cy="76" r="4" fill="white" opacity=".9"/><circle cx="27" cy="76" r="1.8" fill="#E8621A"/>
+            <circle cx="35" cy="76" r="4" fill="white" opacity=".9"/><circle cx="35" cy="76" r="1.8" fill="#E8621A"/>
+            <circle cx="43" cy="76" r="4" fill="white" opacity=".9"/><circle cx="43" cy="76" r="1.8" fill="#E8621A"/>
+            <circle cx="53" cy="76" r="4" fill="white" opacity=".9"/><circle cx="53" cy="76" r="1.8" fill="#E8621A"/>
+            <circle cx="61" cy="76" r="4" fill="white" opacity=".9"/><circle cx="61" cy="76" r="1.8" fill="#E8621A"/>
+            <circle cx="69" cy="76" r="4" fill="white" opacity=".9"/><circle cx="69" cy="76" r="1.8" fill="#E8621A"/>
+            <circle cx="27" cy="84" r="4" fill="white" opacity=".9"/><circle cx="27" cy="84" r="1.8" fill="#E8621A"/>
+            <circle cx="35" cy="84" r="4" fill="white" opacity=".9"/><circle cx="35" cy="84" r="1.8" fill="#E8621A"/>
+            <circle cx="43" cy="84" r="4" fill="white" opacity=".9"/><circle cx="43" cy="84" r="1.8" fill="#E8621A"/>
+            <circle cx="48" cy="84" r="4" fill="white" opacity=".9"/><circle cx="48" cy="84" r="1.8" fill="#E8621A"/>
+            <circle cx="53" cy="84" r="4" fill="white" opacity=".9"/><circle cx="53" cy="84" r="1.8" fill="#E8621A"/>
+            <circle cx="61" cy="84" r="4" fill="white" opacity=".9"/><circle cx="61" cy="84" r="1.8" fill="#E8621A"/>
+            <circle cx="69" cy="84" r="4" fill="white" opacity=".9"/><circle cx="69" cy="84" r="1.8" fill="#E8621A"/>
+            <circle cx="31" cy="92" r="4" fill="white" opacity=".9"/><circle cx="31" cy="92" r="1.8" fill="#E8621A"/>
+            <circle cx="39" cy="92" r="4" fill="white" opacity=".9"/><circle cx="39" cy="92" r="1.8" fill="#E8621A"/>
+            <circle cx="48" cy="92" r="4" fill="white" opacity=".9"/><circle cx="48" cy="92" r="1.8" fill="#E8621A"/>
+            <circle cx="57" cy="92" r="4" fill="white" opacity=".9"/><circle cx="57" cy="92" r="1.8" fill="#E8621A"/>
+            <circle cx="65" cy="92" r="4" fill="white" opacity=".9"/><circle cx="65" cy="92" r="1.8" fill="#E8621A"/>
+            <circle cx="35" cy="100" r="4" fill="white" opacity=".9"/><circle cx="35" cy="100" r="1.8" fill="#E8621A"/>
+            <circle cx="43" cy="100" r="4" fill="white" opacity=".9"/><circle cx="43" cy="100" r="1.8" fill="#E8621A"/>
+            <circle cx="48" cy="100" r="4" fill="white" opacity=".9"/><circle cx="48" cy="100" r="1.8" fill="#E8621A"/>
+            <circle cx="53" cy="100" r="4" fill="white" opacity=".9"/><circle cx="53" cy="100" r="1.8" fill="#E8621A"/>
+            <circle cx="61" cy="100" r="4" fill="white" opacity=".9"/><circle cx="61" cy="100" r="1.8" fill="#E8621A"/>
+            <circle cx="39" cy="108" r="4" fill="white" opacity=".9"/><circle cx="39" cy="108" r="1.8" fill="#E8621A"/>
+            <circle cx="48" cy="108" r="4" fill="white" opacity=".9"/><circle cx="48" cy="108" r="1.8" fill="#E8621A"/>
+            <circle cx="57" cy="108" r="4" fill="white" opacity=".9"/><circle cx="57" cy="108" r="1.8" fill="#E8621A"/>
+            <circle cx="48" cy="116" r="4" fill="white" opacity=".9"/><circle cx="48" cy="116" r="1.8" fill="#E8621A"/>
+          </g>
+        </svg>
+        <span class="site-logo__sub">belleza</span>
+      </a>
+
+      <!-- Desktop nav -->
+      <nav class="main-nav" role="navigation" aria-label="Navegación principal">
+        <a href="{{ routes.root_url }}" class="nav-link {% if request.page_type == 'index' %}active{% endif %}">Inicio</a>
+
+        <!-- Colecciones mega-menu -->
+        <div class="nav-item">
+          <a href="{{ routes.collections_url }}" class="nav-link {% if request.page_type == 'collection' %}active{% endif %}">
+            Colecciones
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </a>
+          <div class="mega-menu" role="region" aria-label="Subcategorías">
+            <div class="mega-menu__grid">
+
+              <div>
+                <div class="mega-col__title">💆‍♀️ Cuidado Capilar</div>
+                <a href="/collections/capilar" class="mega-col__all">Ver todo →</a>
+                {% for brand in brands_capilar %}
+                  <a href="/collections/capilar?filter.p.vendor={{ brand | url_encode }}" class="mega-col__brand">{{ brand }}</a>
+                {% endfor %}
+              </div>
+
+              <div>
+                <div class="mega-col__title">💄 Maquillaje</div>
+                <a href="/collections/maquillaje" class="mega-col__all">Ver todo →</a>
+                {% for brand in brands_maquillaje %}
+                  <a href="/collections/maquillaje?filter.p.vendor={{ brand | url_encode }}" class="mega-col__brand">{{ brand }}</a>
+                {% endfor %}
+              </div>
+
+              <div>
+                <div class="mega-col__title">✨ Dermocosméticos</div>
+                <a href="/collections/dermocosmeticos" class="mega-col__all">Ver todo →</a>
+                {% for brand in brands_dermos %}
+                  <a href="/collections/dermocosmeticos?filter.p.vendor={{ brand | url_encode }}" class="mega-col__brand">{{ brand }}</a>
+                {% endfor %}
+              </div>
+
+            </div>
+            <div class="mega-menu__footer">
+              <a href="{{ routes.collections_url }}" class="mega-footer-all">Ver todas las colecciones</a>
+              <a href="/collections/ofertas" class="mega-footer-sale">🔥 Ver ofertas</a>
+            </div>
+          </div>
+        </div>
+
+        <a href="/collections/novedades" class="nav-link">Novedades</a>
+        <a href="/collections/ofertas" class="nav-link">Ofertas 🔥</a>
+      </nav>
+
+      <!-- Actions -->
+      <div class="header-actions">
+        <!-- Search desktop -->
+        <div style="position:relative;display:flex;align-items:center;">
+          <button id="search-toggle" class="header-btn" aria-label="Buscar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </button>
+          <form id="search-form-desktop" class="search-form-desktop" action="{{ routes.search_url }}" method="get" role="search">
+            <input type="search" name="q" placeholder="Buscar productos o marcas..." autocomplete="off" aria-label="Buscar">
+            <button type="submit">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </button>
+            <button type="button" id="search-close" style="margin-left:6px;color:#9ca3af">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </form>
+        </div>
+
+        <!-- Wishlist -->
+        <a href="/wishlist" class="header-btn" aria-label="Favoritos" style="display:none" id="wishlist-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </a>
+
+        <!-- Cart -->
+        <button id="cart-toggle" class="header-btn cart-btn" aria-label="Carrito de compras">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="cart-count" style="display:none">0</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="mobile-menu" role="dialog" aria-label="Menú móvil">
+    <div class="mobile-search">
+      <form class="mobile-search-form" action="{{ routes.search_url }}" method="get" role="search">
+        <input type="search" name="q" class="mobile-search-input" placeholder="Buscar productos o marcas..." autocomplete="off">
+        <button type="submit" class="mobile-search-btn" aria-label="Buscar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+      </form>
+    </div>
+
+    <nav>
+      <a href="{{ routes.root_url }}" class="mobile-nav-link">Inicio</a>
+
+      {% assign categories = 'capilar,maquillaje,dermocosmeticos' | split: ',' %}
+      {% assign category_labels = 'Cuidado Capilar,Maquillaje,Dermocosméticos' | split: ',' %}
+      {% assign category_emojis = '💆‍♀️,💄,✨' | split: ',' %}
+
+      {% for i in (0..2) %}
+        {% assign handle = categories[i] %}
+        {% assign label  = category_labels[i] %}
+        {% assign emoji  = category_emojis[i] %}
+        <div>
+          <button class="mobile-accordion-header" aria-expanded="false">
+            <span>{{ emoji }} {{ label }}</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="mobile-brand-list">
+            <a href="/collections/{{ handle }}" class="mobile-brand-see-all">Ver todo {{ label }}</a>
+            {% if handle == 'capilar' %}
+              {% for brand in brands_capilar %}
+                <a href="/collections/{{ handle }}?filter.p.vendor={{ brand | url_encode }}" class="mobile-brand-link">{{ brand }}</a>
+              {% endfor %}
+            {% elsif handle == 'maquillaje' %}
+              {% for brand in brands_maquillaje %}
+                <a href="/collections/{{ handle }}?filter.p.vendor={{ brand | url_encode }}" class="mobile-brand-link">{{ brand }}</a>
+              {% endfor %}
+            {% else %}
+              {% for brand in brands_dermos %}
+                <a href="/collections/{{ handle }}?filter.p.vendor={{ brand | url_encode }}" class="mobile-brand-link">{{ brand }}</a>
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+
+      <a href="/collections/novedades" class="mobile-nav-link">Novedades</a>
+      <a href="/collections/ofertas" class="mobile-nav-link">🔥 Ofertas</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  // Mobile menu icon toggle
+  document.getElementById('menu-toggle')?.addEventListener('click', function() {
+    var icon = document.getElementById('menu-icon');
+    var open = icon.getAttribute('data-open') === 'true';
+    icon.querySelector('.icon-menu').style.display = open ? '' : 'none';
+    icon.querySelector('.icon-close').style.display = open ? 'none' : '';
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Encabezado",
+  "settings": [],
+  "presets": [{ "name": "Encabezado" }]
+}
+{% endschema %}

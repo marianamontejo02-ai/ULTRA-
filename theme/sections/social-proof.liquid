@@ -1,0 +1,59 @@
+<section class="section">
+  <div class="container">
+    <div class="section-head section-head--center">
+      <p class="section-eyebrow">Testimonios reales</p>
+      <h2 class="section-title">+10.000 mujeres ya confían en nosotras</h2>
+      <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px">
+        <span style="color:#f59e0b;font-size:20px;letter-spacing:2px">★★★★★</span>
+        <span style="font-size:14px;color:var(--text-muted);font-weight:500">4.9 / 5.0</span>
+      </div>
+    </div>
+
+    <div class="reviews-grid">
+      {% for block in section.blocks %}
+        <div class="review-card" {{ block.shopify_attributes }}>
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"{{ block.settings.text }}"</p>
+          <div class="review-author">
+            <div class="review-avatar" style="background:{{ block.settings.color }}">
+              {{ block.settings.name | slice: 0 }}
+            </div>
+            <div>
+              <p class="review-name">{{ block.settings.name }}</p>
+              <p class="review-meta">{{ block.settings.city }} · Compró: {{ block.settings.product }}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Reseñas",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Reseña",
+      "settings": [
+        { "type": "text",    "id": "name",    "label": "Nombre",      "default": "Valentina M." },
+        { "type": "text",    "id": "city",    "label": "Ciudad",      "default": "Bogotá" },
+        { "type": "text",    "id": "product", "label": "Producto",    "default": "Sérum Vitamina C" },
+        { "type": "textarea","id": "text",    "label": "Reseña",      "default": "Increíble calidad y rapidez en el envío. El producto llegó en perfectas condiciones. ¡Ya hice mi segunda compra!" },
+        { "type": "text",    "id": "color",   "label": "Color avatar", "default": "#E8621A" }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Reseñas",
+    "blocks": [
+      { "type": "review", "settings": { "name": "Valentina M.", "city": "Bogotá",       "product": "Sérum Vitamina C",   "color": "#E8621A", "text": "Increíble calidad y rapidez en el envío. El sérum llegó en perfectas condiciones. ¡Ya hice mi segunda compra!" } },
+      { "type": "review", "settings": { "name": "Camila R.",    "city": "Medellín",     "product": "Kit Capilar OGX",    "color": "#ef4444", "text": "Llevo 3 meses comprando aquí y nunca me han fallado. Los precios son mucho mejores que en otras tiendas." } },
+      { "type": "review", "settings": { "name": "Daniela O.",   "city": "Cali",         "product": "Tónico Savar",       "color": "#8b5cf6", "text": "Por fin una tienda que tiene dermocosméticos colombianos y a buen precio. El tónico de Savar es increíble para el acné." } },
+      { "type": "review", "settings": { "name": "Luisa F.",     "city": "Barranquilla", "product": "Base L'Oréal",       "color": "#f59e0b", "text": "El maquillaje que llegó es 100% original. Muy profesionales y atentos cuando tuve dudas." } }
+    ]
+  }]
+}
+{% endschema %}

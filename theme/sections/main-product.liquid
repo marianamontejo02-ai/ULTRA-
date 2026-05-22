@@ -1,0 +1,208 @@
+<div class="container" style="padding-top:32px;padding-bottom:64px">
+  <nav class="breadcrumb">
+    <a href="{{ routes.root_url }}">Inicio</a>
+    <span>/</span>
+    {% if product.collections.first %}
+      <a href="{{ product.collections.first.url }}">{{ product.collections.first.title }}</a>
+      <span>/</span>
+    {% endif %}
+    <span>{{ product.title }}</span>
+  </nav>
+
+  <div class="product-layout">
+    <!-- Gallery -->
+    <div>
+      <div class="product-gallery__main">
+        <img
+          id="gallery-main-img"
+          src="{{ product.featured_image | image_url: width: 800 }}"
+          alt="{{ product.featured_image.alt | escape }}"
+          width="800" height="800"
+          style="transition:opacity .2s"
+        >
+        {% assign first_variant = product.selected_or_first_available_variant %}
+        {% if first_variant.compare_at_price > first_variant.price %}
+          {% assign disc = first_variant.compare_at_price | minus: first_variant.price | times: 100 | divided_by: first_variant.compare_at_price | round %}
+          <div class="product-gallery__badge">
+            <span class="badge badge-sale">-{{ disc }}%</span>
+          </div>
+        {% endif %}
+      </div>
+
+      {% if product.images.size > 1 %}
+        <div class="product-gallery__thumbs">
+          {% for image in product.images %}
+            <div class="product-gallery__thumb {% if forloop.first %}active{% endif %}">
+              <img
+                src="{{ image | image_url: width: 150 }}"
+                alt="{{ image.alt | escape }}"
+                width="150" height="150"
+                loading="lazy"
+              >
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Info -->
+    <div class="product-info">
+      <p class="product-info__vendor">{{ product.vendor }}</p>
+      <h1 class="product-info__title">{{ product.title }}</h1>
+
+      <div class="product-info__stars">
+        <span class="product-info__stars-icons">★★★★★</span>
+        <span class="product-info__stars-count">4.8 (127 reseñas)</span>
+      </div>
+
+      <!-- Price -->
+      <div class="product-price" id="product-price-block">
+        <span id="product-price" class="product-price__current {% if first_variant.compare_at_price > first_variant.price %}sale{% endif %}">
+          {{ first_variant.price | money }}
+        </span>
+        {% if first_variant.compare_at_price > first_variant.price %}
+          <span id="product-compare-price" class="product-price__compare">{{ first_variant.compare_at_price | money }}</span>
+          {% assign disc2 = first_variant.compare_at_price | minus: first_variant.price | times: 100 | divided_by: first_variant.compare_at_price | round %}
+          <span class="badge badge-sale">Ahorras {{ disc2 }}%</span>
+        {% else %}
+          <span id="product-compare-price" style="display:none" class="product-price__compare"></span>
+        {% endif %}
+      </div>
+
+      <!-- Urgency -->
+      {% if first_variant.inventory_quantity <= 5 and first_variant.inventory_quantity > 0 %}
+        <div class="urgency-bar">
+          ⚡ ¡Solo quedan {{ first_variant.inventory_quantity }} en stock!
+        </div>
+      {% endif %}
+
+      <div class="viewers-bar">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        <span id="viewers-count">{{ 'now' | date: '%s' | modulo: 20 | plus: 8 }} personas están viendo esto ahora</span>
+      </div>
+
+      <form id="product-form" method="post" action="{{ routes.cart_add_url }}" enctype="multipart/form-data">
+        <input type="hidden" name="form_type" value="product">
+        <input type="hidden" name="utf8" value="✓">
+        <input type="hidden" id="variant-id" name="id" value="{{ first_variant.id }}">
+
+        <!-- Variants -->
+        <script id="product-variants-json" type="application/json">
+          {{ product.variants | json }}
+        </script>
+
+        {% unless product.has_only_default_variant %}
+          {% for option in product.options_with_values %}
+            <div class="variant-option" data-option-name="{{ option.name }}">
+              <div class="variant-option__label">
+                <span>{{ option.name }}</span>
+                <span class="variant-selected-value">{{ option.selected_value }}</span>
+              </div>
+              <div class="variant-buttons">
+                {% for value in option.values %}
+                  <button
+                    type="button"
+                    class="variant-btn {% if option.selected_value == value %}active{% endif %}"
+                    {% unless product.variants | where: 'option1', value | map: 'available' | first %}disabled{% endunless %}
+                  >{{ value }}</button>
+                {% endfor %}
+              </div>
+            </div>
+          {% endfor %}
+        {% endunless %}
+
+        <!-- Add to cart -->
+        <div class="add-to-cart-section">
+          <button
+            id="add-to-cart-btn"
+            type="button"
+            class="add-to-cart-btn"
+            data-add-to-cart
+            data-text="Agregar al carrito"
+            {% unless product.available %}disabled{% endunless %}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            {% if product.available %}Agregar al carrito{% else %}Producto agotado{% endif %}
+          </button>
+
+          <a href="{{ routes.cart_url }}" class="buy-now-btn" id="buy-now-btn" onclick="Cart.add(document.getElementById('variant-id').value,1,null);return false;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Comprar ahora
+          </a>
+        </div>
+      </form>
+
+      <!-- Guarantees -->
+      <div class="product-guarantees">
+        <div class="guarantee-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          <strong>Envío a Colombia</strong>
+          <span>Despacho en 24h</span>
+        </div>
+        <div class="guarantee-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
+          <strong>Devoluciones</strong>
+          <span>30 días, fácil</span>
+        </div>
+        <div class="guarantee-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <strong>100% Original</strong>
+          <span>Garantía autenticidad</span>
+        </div>
+      </div>
+
+      <p class="payment-note">💳 Paga con Visa, Mastercard, Nequi, PSE, Bancolombia o Efecty</p>
+
+      <!-- Accordion -->
+      <div class="accordion">
+        {% if product.description != blank %}
+          <div class="accordion-item">
+            <button class="accordion-trigger" type="button">
+              Descripción del producto
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="accordion-content">{{ product.description }}</div>
+          </div>
+        {% endif %}
+        <div class="accordion-item">
+          <button class="accordion-trigger" type="button">
+            Modo de uso
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="accordion-content">
+            <p>Aplica según las indicaciones del producto. Para mejores resultados, úsalo en tu rutina diaria de belleza.</p>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-trigger" type="button">
+            Envío y devoluciones
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="accordion-content">
+            <p>Enviamos a todo Colombia en 2-5 días hábiles. Envío gratis en compras desde $150.000. Devoluciones aceptadas en 30 días.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Related products -->
+  {% if recommendations.performed and recommendations.products_count > 0 %}
+    <div style="margin-top:64px;padding-top:48px;border-top:1px solid var(--border)">
+      <h2 class="section-title" style="margin-bottom:28px">Completa tu rutina</h2>
+      <div class="product-grid">
+        {% for rec in recommendations.products limit: 4 %}
+          {% render 'product-card', card_product: rec %}
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Página de producto",
+  "settings": [],
+  "presets": [{ "name": "Página de producto" }]
+}
+{% endschema %}
