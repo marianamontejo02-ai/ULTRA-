@@ -19,7 +19,7 @@ export async function FeaturedProducts({
   limit = 8,
   viewAllHref = '/colecciones',
 }: FeaturedProductsProps) {
-  let products = [];
+  let products: Awaited<ReturnType<typeof getProducts>> = [];
   try {
     products = await getProducts({ first: limit, sortKey });
   } catch {

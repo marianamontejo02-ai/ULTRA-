@@ -1,122 +1,147 @@
 export const dynamic = 'force-dynamic';
 
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
 import type { Metadata } from 'next';
 import { getCollection, getCollections } from '@/lib/shopify/queries';
 import { ProductGrid } from '@/components/product/ProductGrid';
+import { BrandFilter } from '@/components/collection/BrandFilter';
 import type { Product } from '@/lib/shopify/types';
 
 interface CollectionPageProps {
   params: { handle: string };
-  searchParams: { sort?: string; order?: string };
+  searchParams: { sort?: string; marca?: string };
 }
 
 const SORT_OPTIONS = [
-  { label: 'Más vendidos', key: 'BEST_SELLING', reverse: false },
-  { label: 'Precio: menor a mayor', key: 'PRICE', reverse: false },
-  { label: 'Precio: mayor a menor', key: 'PRICE', reverse: true },
-  { label: 'Más recientes', key: 'CREATED', reverse: true },
-  { label: 'A–Z', key: 'TITLE', reverse: false },
+  { label: 'Más vendidos',          value: 'BEST_SELLING' },
+  { label: 'Precio: menor a mayor', value: 'PRICE_ASC' },
+  { label: 'Precio: mayor a menor', value: 'PRICE_DESC' },
+  { label: 'Más recientes',         value: 'CREATED' },
+  { label: 'A – Z',                 value: 'TITLE' },
 ];
 
-export async function generateStaticParams() {
+export async function generateMetadata({ params }: CollectionPageProps): Promise<Metadata> {
   try {
-    const collections = await getCollections();
-    return collections.map((c) => ({ handle: c.handle }));
+    const collection = await getCollection({ handle: params.handle });
+    if (!collection) return { title: 'Colección no encontrada' };
+    return {
+      title: collection.title,
+      description:
+        collection.description ||
+        `Descubre nuestra colección de ${collection.title} en ULTRA belleza.`,
+    };
   } catch {
-    return [];
+    return { title: params.handle };
   }
 }
 
-export async function generateMetadata({ params }: CollectionPageProps): Promise<Metadata> {
-  const collection = await getCollection({ handle: params.handle });
-  if (!collection) return { title: 'Colección no encontrada' };
-  return {
-    title: collection.title,
-    description:
-      collection.description ||
-      `Descubre nuestra colección de ${collection.title} en ULTRA belleza.`,
-  };
-}
-
 export default async function CollectionPage({ params, searchParams }: CollectionPageProps) {
-  const sortKey = searchParams.sort || 'BEST_SELLING';
-  const reverse = searchParams.order === 'desc';
+  const sortParam = searchParams.sort || 'BEST_SELLING';
+  const marcaFilter = searchParams.marca?.trim() || '';
 
-  const collection = await getCollection({
-    handle: params.handle,
-    first: 24,
-    sortKey,
-    reverse,
-  });
+  // Map sort param to Shopify args
+  const sortMap: Record<string, { sortKey: string; reverse: boolean }> = {
+    BEST_SELLING: { sortKey: 'BEST_SELLING', reverse: false },
+    PRICE_ASC:    { sortKey: 'PRICE',        reverse: false },
+    PRICE_DESC:   { sortKey: 'PRICE',        reverse: true  },
+    CREATED:      { sortKey: 'CREATED',      reverse: true  },
+    TITLE:        { sortKey: 'TITLE',        reverse: false },
+  };
+  const { sortKey, reverse } = sortMap[sortParam] ?? sortMap.BEST_SELLING;
+
+  let collection;
+  try {
+    collection = await getCollection({ handle: params.handle, first: 100, sortKey, reverse });
+  } catch {
+    collection = null;
+  }
 
   if (!collection) notFound();
 
-  const products: Product[] = collection.products.edges.map((e) => ({
+  // Normalize products
+  let products: Product[] = collection.products.edges.map((e) => ({
     ...e.node,
     variantsList: e.node.variants.edges.map((v) => v.node),
-    imagesList: e.node.images.edges.map((img) => img.node),
+    imagesList:   e.node.images.edges.map((img) => img.node),
   }));
 
+  // Collect unique vendors for the brand filter
+  const allVendors = Array.from(new Set(products.map((p) => p.vendor).filter(Boolean))).sort();
+
+  // Apply brand filter
+  if (marcaFilter) {
+    products = products.filter(
+      (p) => p.vendor.toLowerCase() === marcaFilter.toLowerCase()
+    );
+  }
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      {/* Header */}
-      <div className="mb-8">
-        <nav className="text-sm text-gray-500 mb-3">
-          <a href="/" className="hover:text-ultra-600">Inicio</a>
-          {' / '}
-          <a href="/colecciones" className="hover:text-ultra-600">Colecciones</a>
-          {' / '}
-          <span className="text-gray-800 font-medium">{collection.title}</span>
-        </nav>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Breadcrumb */}
+      <nav className="text-sm text-gray-500 mb-5">
+        <Link href="/" className="hover:text-ultra-600">Inicio</Link>
+        {' / '}
+        <Link href="/colecciones" className="hover:text-ultra-600">Colecciones</Link>
+        {' / '}
+        <span className="text-gray-800 font-medium">{collection.title}</span>
+        {marcaFilter && (
+          <>
+            {' / '}
+            <span className="text-ultra-600 font-medium">{marcaFilter}</span>
+          </>
+        )}
+      </nav>
 
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">{collection.title}</h1>
-            {collection.description && (
-              <p className="text-gray-500 mt-1 max-w-2xl">{collection.description}</p>
+      {/* Header row */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+            {marcaFilter ? (
+              <>
+                {marcaFilter}{' '}
+                <span className="text-gray-400 font-normal text-xl">en {collection.title}</span>
+              </>
+            ) : (
+              collection.title
             )}
-            <p className="text-sm text-gray-400 mt-1">
-              {collection.products.edges.length} productos
-            </p>
-          </div>
-
-          {/* Sort */}
-          <div className="flex items-center gap-2">
-            <label htmlFor="sort" className="text-sm text-gray-600 whitespace-nowrap">
-              Ordenar por:
-            </label>
-            <select
-              id="sort"
-              className="text-sm border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-ultra-500 bg-white"
-              defaultValue={sortKey}
-              onChange={(e) => {
-                const url = new URL(window.location.href);
-                url.searchParams.set('sort', e.target.value);
-                window.location.href = url.toString();
-              }}
-            >
-              {SORT_OPTIONS.map((opt) => (
-                <option key={`${opt.key}-${opt.reverse}`} value={opt.key}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
-          </div>
+          </h1>
+          {collection.description && !marcaFilter && (
+            <p className="text-gray-500 mt-1 max-w-2xl text-sm">{collection.description}</p>
+          )}
+          <p className="text-sm text-gray-400 mt-1">
+            {products.length} {products.length === 1 ? 'producto' : 'productos'}
+          </p>
         </div>
+
+        {/* Sort selector */}
+        <form method="get" className="flex items-center gap-2 shrink-0">
+          {marcaFilter && <input type="hidden" name="marca" value={marcaFilter} />}
+          <label htmlFor="sort" className="text-sm text-gray-600 whitespace-nowrap">Ordenar:</label>
+          <select
+            id="sort"
+            name="sort"
+            defaultValue={sortParam}
+            onChange={(e) => (e.target.form as HTMLFormElement).submit()}
+            className="text-sm border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-ultra-500 bg-white"
+          >
+            {SORT_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>{opt.label}</option>
+            ))}
+          </select>
+        </form>
       </div>
 
-      {/* Products */}
-      <ProductGrid products={products} priority />
+      {/* Brand filter pills */}
+      <BrandFilter
+        brands={allVendors}
+        active={marcaFilter}
+        collectionHandle={params.handle}
+        sortParam={sortParam}
+      />
 
-      {/* Load more */}
-      {collection.products.pageInfo.hasNextPage && (
-        <div className="text-center mt-12">
-          <button className="px-10 py-3.5 border-2 border-ultra-500 text-ultra-600 font-semibold rounded-2xl hover:bg-ultra-50 transition-colors">
-            Cargar más productos
-          </button>
-        </div>
-      )}
+      {/* Products grid */}
+      <ProductGrid products={products} priority />
     </div>
   );
 }

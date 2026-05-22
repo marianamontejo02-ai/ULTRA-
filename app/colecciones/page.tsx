@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function CollectionsPage() {
-  let collections = [];
+  let collections: Awaited<ReturnType<typeof getCollections>> = [];
   try {
     collections = await getCollections();
   } catch {
