@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SÚPER MAJES — Reporte de Visita</title>
+  <style>
+    /* ── Reset & base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #1c1c1c;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+      padding: 2rem 1rem 4rem;
+      color: #fff;
+    }
+
+    /* ── Header strip ── */
+    .top-bar {
+      background: #aaff00;
+      height: 8px;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+    }
+
+    /* ── Form wrapper ── */
+    .form-wrapper {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* ── Cover card ── */
+    .cover-card {
+      background: #2b2b2b;
+      border-radius: 16px;
+      border-top: 6px solid #aaff00;
+      padding: 2rem 2rem 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .cover-card .badge {
+      display: inline-block;
+      background: #aaff00;
+      color: #111;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+    }
+    .cover-card h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+    .cover-card h1 span { color: #aaff00; }
+    .cover-card p {
+      font-size: 0.92rem;
+      color: #aaa;
+      line-height: 1.6;
+    }
+    .required-note {
+      font-size: 0.8rem;
+      color: #aaff00;
+      margin-top: 1rem;
+    }
+
+    /* ── Section card ── */
+    .section-card {
+      background: #2b2b2b;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 1.25rem;
+    }
+    .section-header {
+      background: #222;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border-bottom: 1px solid #3a3a3a;
+    }
+    .section-number {
+      background: #aaff00;
+      color: #111;
+      font-size: 0.75rem;
+      font-weight: 800;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .section-header h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .section-header p {
+      font-size: 0.8rem;
+      color: #888;
+      margin-top: 2px;
+    }
+    .section-body {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* ── Question ── */
+    .question { display: flex; flex-direction: column; gap: 0.45rem; }
+    .question label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #e0e0e0;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.3rem;
+    }
+    .req { color: #aaff00; font-size: 1rem; line-height: 1; }
+    .hint {
+      font-size: 0.78rem;
+      color: #777;
+      margin-top: -0.2rem;
+    }
+
+    /* ── Inputs ── */
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    select,
+    textarea {
+      background: #1c1c1c;
+      border: 1.5px solid #3a3a3a;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.9rem;
+      padding: 0.65rem 0.9rem;
+      width: 100%;
+      transition: border-color 0.2s;
+      outline: none;
+      font-family: inherit;
+    }
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    input[type="date"]:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #aaff00;
+    }
+    select option { background: #2b2b2b; }
+    textarea { resize: vertical; min-height: 90px; }
+
+    /* ── Radio / Checkbox ── */
+    .radio-group, .check-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .radio-group.inline { flex-direction: row; gap: 1rem; }
+    .radio-option, .check-option {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      cursor: pointer;
+      padding: 0.6rem 0.9rem;
+      border-radius: 8px;
+      border: 1.5px solid #3a3a3a;
+      background: #1c1c1c;
+      transition: border-color 0.2s, background 0.2s;
+      font-size: 0.88rem;
+      color: #ccc;
+      user-select: none;
+    }
+    .radio-option:hover, .check-option:hover {
+      border-color: #aaff00;
+      background: #222;
+    }
+    .radio-option input, .check-option input { accent-color: #aaff00; }
+    .radio-option input:checked + span, .check-option input:checked + span {
+      color: #aaff00; font-weight: 600;
+    }
+
+    /* ── File upload ── */
+    .file-upload {
+      background: #1c1c1c;
+      border: 2px dashed #3a3a3a;
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .file-upload:hover { border-color: #aaff00; }
+    .file-upload .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .file-upload p { font-size: 0.85rem; color: #888; }
+    .file-upload p span { color: #aaff00; font-weight: 600; }
+    .file-upload input { display: none; }
+
+    /* ── Submit ── */
+    .submit-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding-top: 0.5rem;
+    }
+    .btn-submit {
+      background: #aaff00;
+      color: #111;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 800;
+      padding: 0.85rem 3rem;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      width: 100%;
+      max-width: 320px;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+    .btn-submit:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-submit:active { transform: translateY(0); }
+    .form-footer {
+      font-size: 0.78rem;
+      color: #555;
+      text-align: center;
+    }
+
+    /* ── Progress bar ── */
+    .progress-wrap {
+      margin-bottom: 1.5rem;
+    }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: #777;
+      margin-bottom: 6px;
+    }
+    .progress-bar {
+      background: #2b2b2b;
+      border-radius: 999px;
+      height: 6px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      background: #aaff00;
+      height: 100%;
+      border-radius: 999px;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 480px) {
+      .cover-card h1 { font-size: 1.5rem; }
+      .radio-group.inline { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar"></div>
+  <div class="form-wrapper">
+
+    <!-- COVER -->
+    <div class="cover-card">
+      <div class="badge">Super de Alimentos · Honduras</div>
+      <h1>🌟 SÚPER <span>MAJES</span></h1>
+      <p>Formulario de reporte diario para el equipo de mercaderistas.<br>
+         Completa todos los campos al finalizar tu jornada en campo.</p>
+      <p class="required-note">* Los campos con asterisco son obligatorios.</p>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Progreso</span><span id="pct">0 %</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="pbar"></div></div>
+    </div>
+
+    <form id="superMajes" novalidate>
+
+      <!-- ─── SECCIÓN 1 ─── -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-number">1</div>
+          <div>
+            <h2>Información Básica</h2>
+            <p>Datos de identificación de la visita</p>
+          </div>
+        </div>
+        <div class="section-body">
+
+          <div class="question">
+            <label>Nombre del mercaderista <span class="req">*</span></label>
+            <input type="text" name="nombre" placeholder="Ej: Carlos Mejía" required />
+          </div>
+
+          <div class="question">
+            <label>Fecha <span class="req">*</span></label>
+            <input type="date" name="fecha" required />
+          </div>
+
+          <div class="question">
+            <label>Ciudad o zona <span class="req">*</span></label>
+            <select name="ciudad" required>
+              <option value="" disabled selected>Selecciona una opción</option>
+              <option>Tegucigalpa</option>
+              <option>San Pedro Sula</option>
+              <option>La Ceiba</option>
+              <option>Choloma</option>
+              <option>El Progreso</option>
+              <option>Comayagua</option>
+              <option>Choluteca</option>
+              <option>Siguatepeque</option>
+              <option>Otra</option>
+            </select>
+          </div>
+
+          <div class="question">
+            <label>Nombre de tienda o cliente visitado <span class="req">*</span></label>
+            <input type="text" name="tienda" placeholder="Ej: Pulpería La Esperanza" required />
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ─── SECCIÓN 2 ─── -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-number">2</div>
+          <div>
+            <h2>Cobertura y Visita</h2>
+            <p>Datos para medir la intervención en campo</p>
+          </div>
+        </div>
+        <div class="section-body">
+
+          <div class="question">
+            <label>¿La tienda fue visitada? <span class="req">*</span></label>
+            <div class="radio-group inline">
+              <label class="radio-option">
+                <input type="radio" name="visitada" value="Sí" required />
+                <span>Sí</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="visitada" value="No" />
+                <span>No</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="question">
+            <label>¿Se realizó actividad en punto de venta? <span class="req">*</span></label>
+            <div class="radio-group inline">
+              <label class="radio-option">
+                <input type="radio" name="actividad" value="Sí" required />
+                <span>Sí</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="actividad" value="No" />
+                <span>No</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="question">
+            <label>Cantidad de tiendas impactadas en la jornada <span class="req">*</span></label>
+            <span class="hint">Escribe el número total del día</span>
+            <input type="number" name="tiendas_impactadas" min="0" placeholder="Ej: 12" required />
+          </div>
+
+          <div class="question">
+            <label>¿Se realizó degustación? <span class="req">*</span></label>
+            <div class="radio-group inline">
+              <label class="radio-option">
+                <input type="radio" name="degustacion" value="Sí" required />
+                <span>Sí</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="degustacion" value="No" />
+                <span>No</span>
+              </label>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ─── SECCIÓN 3 ─── -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-number">3</div>
+          <div>
+            <h2>Ejecución Comercial</h2>
+            <p>Combos armados y penetración de referencias</p>
+          </div>
+        </div>
+        <div class="section-body">
+
+          <div class="question">
+            <label>¿Se armó combo promocional? <span class="req">*</span></label>
+            <div class="radio-group inline">
+              <label class="radio-option">
+                <input type="radio" name="combo" value="Sí" required />
+                <span>Sí</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="combo" value="No" />
+                <span>No</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="question">
+            <label>Referencia(s) trabajada(s) <span class="req">*</span></label>
+            <span class="hint">Puedes seleccionar más de una</span>
+            <div class="check-group">
+              <label class="check-option"><input type="checkbox" name="referencia" value="Trululu Nanos" /><span>Trululu Nanos</span></label>
+              <label class="check-option"><input type="checkbox" name="referencia" value="Trululu Nanos — Edición Estelar" /><span>Trululu Nanos — Edición Estelar ⭐</span></label>
+              <label class="check-option"><input type="checkbox" name="referencia" value="Bianchi Leche" /><span>Bianchi Leche</span></label>
+              <label class="check-option"><input type="checkbox" name="referencia" value="OkaLoka Novedades" /><span>OkaLoka Novedades</span></label>
+              <label class="check-option"><input type="checkbox" name="referencia" value="Next Refrescante" /><span>Next Refrescante</span></label>
+              <label class="check-option"><input type="checkbox" name="referencia" value="Otra referencia" /><span>Otra referencia</span></label>
+            </div>
+          </div>
+
+          <div class="question">
+            <label>Cantidad de combos armados <span class="req">*</span></label>
+            <span class="hint">Escribe 0 si no se armó ninguno</span>
+            <input type="number" name="combos" min="0" placeholder="Ej: 5" required />
+          </div>
+
+          <div class="question">
+            <label>¿Se instaló material de apoyo (POP / exhibidor / branding)? <span class="req">*</span></label>
+            <div class="radio-group inline">
+              <label class="radio-option">
+                <input type="radio" name="material" value="Sí" required />
+                <span>Sí</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="material" value="No" />
+                <span>No</span>
+              </label>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ─── SECCIÓN 4 ─── -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-number">4</div>
+          <div>
+            <h2>Evidencia</h2>
+            <p>Clave para validar la ejecución en campo</p>
+          </div>
+        </div>
+        <div class="section-body">
+
+          <div class="question">
+            <label>Fotografía del punto de venta <span class="req">*</span></label>
+            <span class="hint">Sube hasta 5 fotos que evidencien la actividad realizada</span>
+            <label class="file-upload" for="foto">
+              <div class="icon">📷</div>
+              <p>Toca aquí para <span>adjuntar fotos</span></p>
+              <p>JPG, PNG · Máx. 5 archivos</p>
+              <input type="file" id="foto" name="foto" accept="image/*" multiple capture="environment" required />
+            </label>
+            <div id="preview" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;"></div>
+          </div>
+
+          <div class="question">
+            <label>Observaciones del punto de venta</label>
+            <span class="hint">Novedades, inconvenientes, oportunidades o datos relevantes del cliente</span>
+            <textarea name="observaciones" placeholder="Ej: El tendero mencionó interés en Edición Estelar para la próxima semana..."></textarea>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SUBMIT -->
+      <div class="submit-area">
+        <button type="submit" class="btn-submit">Enviar reporte 🚀</button>
+        <p class="form-footer">
+          Super de Alimentos · Plan Súper Majes · Honduras<br>
+          Los datos son confidenciales y de uso interno.
+        </p>
+      </div>
+
+    </form>
+  </div>
+
+  <script>
+    // ── Set today's date by default ──────────────────────────────────────────
+    const dateInput = document.querySelector('input[type="date"]');
+    if (dateInput) {
+      const today = new Date();
+      const y = today.getFullYear();
+      const m = String(today.getMonth() + 1).padStart(2, '0');
+      const d = String(today.getDate()).padStart(2, '0');
+      dateInput.value = `${y}-${m}-${d}`;
+    }
+
+    // ── Progress bar ──────────────────────────────────────────────────────────
+    const requiredFields = [
+      'nombre','fecha','ciudad','tienda',
+      'visitada','actividad','tiendas_impactadas','degustacion',
+      'combo','combos','material'
+    ];
+    function updateProgress() {
+      let filled = 0;
+      requiredFields.forEach(name => {
+        const els = document.querySelectorAll(`[name="${name}"]`);
+        if (els.length === 0) return;
+        const type = els[0].type;
+        if (type === 'radio') {
+          if ([...els].some(e => e.checked)) filled++;
+        } else {
+          if (els[0].value.trim() !== '') filled++;
+        }
+      });
+      // Check photo
+      const photoInput = document.getElementById('foto');
+      if (photoInput && photoInput.files && photoInput.files.length > 0) filled++;
+
+      const total = requiredFields.length + 1; // +1 for photo
+      const pct = Math.round((filled / total) * 100);
+      document.getElementById('pbar').style.width = pct + '%';
+      document.getElementById('pct').textContent = pct + ' %';
+    }
+    document.getElementById('superMajes').addEventListener('input', updateProgress);
+    document.getElementById('superMajes').addEventListener('change', updateProgress);
+    updateProgress();
+
+    // ── Photo preview ─────────────────────────────────────────────────────────
+    document.getElementById('foto').addEventListener('change', function () {
+      const preview = document.getElementById('preview');
+      preview.innerHTML = '';
+      [...this.files].slice(0, 5).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = e => {
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          img.style.cssText = 'width:70px;height:70px;object-fit:cover;border-radius:8px;border:2px solid #aaff00;';
+          preview.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      });
+      updateProgress();
+    });
+
+    // ── Submit ────────────────────────────────────────────────────────────────
+    document.getElementById('superMajes').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const btn = document.querySelector('.btn-submit');
+      btn.textContent = '✅ ¡Reporte enviado! Gracias, Súper Maje 💪';
+      btn.style.background = '#00e676';
+      btn.disabled = true;
+    });
+  </script>
+</body>
+</html>
