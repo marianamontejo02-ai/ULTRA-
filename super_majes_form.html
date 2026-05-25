@@ -419,19 +419,6 @@
           </div>
 
           <div class="question">
-            <label>Referencia(s) trabajada(s) <span class="req">*</span></label>
-            <span class="hint">Puedes seleccionar más de una</span>
-            <div class="check-group">
-              <label class="check-option"><input type="checkbox" name="referencia" value="Trululu Nanos" /><span>Trululu Nanos</span></label>
-              <label class="check-option"><input type="checkbox" name="referencia" value="Trululu Nanos — Edición Estelar" /><span>Trululu Nanos — Edición Estelar ⭐</span></label>
-              <label class="check-option"><input type="checkbox" name="referencia" value="Bianchi Leche" /><span>Bianchi Leche</span></label>
-              <label class="check-option"><input type="checkbox" name="referencia" value="OkaLoka Novedades" /><span>OkaLoka Novedades</span></label>
-              <label class="check-option"><input type="checkbox" name="referencia" value="Next Refrescante" /><span>Next Refrescante</span></label>
-              <label class="check-option"><input type="checkbox" name="referencia" value="Otra referencia" /><span>Otra referencia</span></label>
-            </div>
-          </div>
-
-          <div class="question">
             <label>Cantidad de combos armados <span class="req">*</span></label>
             <span class="hint">Escribe 0 si no se armó ninguno</span>
             <input type="number" name="combos" min="0" placeholder="Ej: 5" required />
@@ -514,6 +501,7 @@
       'nombre','fecha','ciudad','tienda',
       'visitada','actividad','tiendas_impactadas','degustacion',
       'combo','combos','material'
+    // 'referencia' eliminado
     ];
     function updateProgress() {
       let filled = 0;

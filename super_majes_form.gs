@@ -103,19 +103,6 @@ function crearFormularioSuperMajes() {
     .setChoiceValues(['Sí', 'No'])
     .setRequired(true);
 
-  form.addCheckboxItem()
-    .setTitle('Referencia trabajada')
-    .setHelpText('Puedes seleccionar más de una')
-    .setChoiceValues([
-      'Trululu Nanos',
-      'Trululu Nanos — Edición Estelar',
-      'Bianchi Leche',
-      'OkaLoka Novedades',
-      'Next Refrescante',
-      'Otra referencia'
-    ])
-    .setRequired(true);
-
   form.addTextItem()
     .setTitle('Cantidad de combos armados')
     .setHelpText('Escribe 0 si no se armó ninguno')
