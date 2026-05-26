@@ -1,13 +1,14 @@
-{% comment %} Header con mega-menu de categorias y marcas {% endcomment %}
-{% assign main_menu = linklists[section.settings.main_menu] %}
+{% assign brands_capilar    = 'Anyeluz,Atenea,Montoc,Milagros,OGX,Pantene,Sedal,Tío Nacho,Wella' | split: ',' %}
+{% assign brands_maquillaje = "Anyeluz,Atenea,Milagros,L'Oréal,Revlon,Maybelline,NYX,Rimmel" | split: ',' %}
+{% assign brands_dermos     = 'Anyeluz,Atenea,Montoc,Milagros,Weleda,Savar,Natura,Payot' | split: ',' %}
 
 <header class="site-header" id="site-header" role="banner">
 
-  <!-- Fila 1: Logo · Búsqueda · Iconos -->
+  <!-- ── Fila 1: Logo · Búsqueda · Iconos ─────────────────── -->
   <div class="header-main">
     <div class="container header-main__inner">
 
-      <!-- Hamburger -->
+      <!-- Hamburger (mobile) -->
       <button id="menu-toggle" class="hdr-icon-btn" aria-label="Menú" aria-expanded="false">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
@@ -16,16 +17,38 @@
       <a href="{{ routes.root_url }}" class="hdr-logo" aria-label="{{ shop.name }}">
         <svg width="38" height="38" viewBox="0 0 96 96" fill="none">
           <circle cx="48" cy="48" r="47" fill="#E8621A"/>
-          <text x="48" y="54" text-anchor="middle" fill="white" font-size="28" font-weight="900" font-family="Arial Black,Arial,sans-serif" letter-spacing="-0.5">ULTRA</text>
+          <text x="48" y="54" text-anchor="middle" fill="white" font-size="28" font-weight="900" font-family="Arial Black, Arial, sans-serif" letter-spacing="-0.5">ULTRA</text>
+          <g transform="translate(14,0) scale(0.72) translate(0,-62)">
+            <circle cx="31" cy="68" r="4" fill="white" opacity=".9"/><circle cx="31" cy="68" r="1.8" fill="#E8621A"/>
+            <circle cx="39" cy="68" r="4" fill="white" opacity=".9"/><circle cx="39" cy="68" r="1.8" fill="#E8621A"/>
+            <circle cx="57" cy="68" r="4" fill="white" opacity=".9"/><circle cx="57" cy="68" r="1.8" fill="#E8621A"/>
+            <circle cx="65" cy="68" r="4" fill="white" opacity=".9"/><circle cx="65" cy="68" r="1.8" fill="#E8621A"/>
+            <circle cx="35" cy="76" r="4" fill="white" opacity=".9"/><circle cx="35" cy="76" r="1.8" fill="#E8621A"/>
+            <circle cx="43" cy="76" r="4" fill="white" opacity=".9"/><circle cx="43" cy="76" r="1.8" fill="#E8621A"/>
+            <circle cx="53" cy="76" r="4" fill="white" opacity=".9"/><circle cx="53" cy="76" r="1.8" fill="#E8621A"/>
+            <circle cx="61" cy="76" r="4" fill="white" opacity=".9"/><circle cx="61" cy="76" r="1.8" fill="#E8621A"/>
+            <circle cx="35" cy="84" r="4" fill="white" opacity=".9"/><circle cx="35" cy="84" r="1.8" fill="#E8621A"/>
+            <circle cx="48" cy="84" r="4" fill="white" opacity=".9"/><circle cx="48" cy="84" r="1.8" fill="#E8621A"/>
+            <circle cx="61" cy="84" r="4" fill="white" opacity=".9"/><circle cx="61" cy="84" r="1.8" fill="#E8621A"/>
+            <circle cx="39" cy="92" r="4" fill="white" opacity=".9"/><circle cx="39" cy="92" r="1.8" fill="#E8621A"/>
+            <circle cx="48" cy="92" r="4" fill="white" opacity=".9"/><circle cx="48" cy="92" r="1.8" fill="#E8621A"/>
+            <circle cx="57" cy="92" r="4" fill="white" opacity=".9"/><circle cx="57" cy="92" r="1.8" fill="#E8621A"/>
+            <circle cx="48" cy="100" r="4" fill="white" opacity=".9"/><circle cx="48" cy="100" r="1.8" fill="#E8621A"/>
+          </g>
         </svg>
         <span class="hdr-logo__text">belleza</span>
       </a>
 
-      <!-- Search bar -->
+      <!-- Search bar (central, prominente) -->
       <form class="hdr-search" action="{{ routes.search_url }}" method="get" role="search">
-        <input type="search" name="q" class="hdr-search__input"
-          placeholder="{{ section.settings.search_placeholder }}"
-          autocomplete="off" aria-label="Buscar">
+        <input
+          type="search"
+          name="q"
+          class="hdr-search__input"
+          placeholder="Busca productos, marcas o categorías..."
+          autocomplete="off"
+          aria-label="Buscar"
+        >
         <input type="hidden" name="type" value="product">
         <button type="submit" class="hdr-search__btn" aria-label="Buscar">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -40,16 +63,16 @@
             <span class="hdr-icon-label">Cuenta</span>
           </a>
         {% else %}
-          <a href="{{ routes.account_login_url }}" class="hdr-icon-btn hdr-icon-btn--desktop" aria-label="Ingresar">
+          <a href="{{ routes.account_login_url }}" class="hdr-icon-btn hdr-icon-btn--desktop" aria-label="Iniciar sesión">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             <span class="hdr-icon-label">Ingresar</span>
           </a>
         {% endif %}
 
-        <a href="{{ section.settings.wishlist_url | default: '/pages/favoritos' }}" class="hdr-icon-btn hdr-icon-btn--desktop" aria-label="Favoritos">
+        <button class="hdr-icon-btn hdr-icon-btn--desktop" aria-label="Favoritos">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           <span class="hdr-icon-label">Favoritos</span>
-        </a>
+        </button>
 
         <button id="cart-toggle" class="hdr-icon-btn hdr-cart-btn" aria-label="Carrito">
           <div class="hdr-cart-wrap">
@@ -59,99 +82,34 @@
           <span class="hdr-icon-label">Bolsa</span>
         </button>
       </div>
+
     </div>
   </div>
 
-  <!-- Fila 2: Barra de navegacion con mega-menus -->
-  <nav class="hdr-nav" role="navigation" aria-label="Categorias">
+  <!-- ── Fila 2: Categorías nav ────────────────────────────── -->
+  <nav class="hdr-nav" role="navigation" aria-label="Categorías">
     <div class="container hdr-nav__inner">
 
-      <!-- INICIO -->
-      <a href="{{ routes.root_url }}" class="hdr-nav__link {% if template.name == 'index' %}active{% endif %}">Inicio</a>
+      <a href="{{ routes.root_url }}" class="hdr-nav__link {% if request.page_type == 'index' %}active{% endif %}">Inicio</a>
 
-      <!-- MARCAS — mega menu -->
+      <!-- Maquillaje -->
       <div class="hdr-nav__item">
-        <a href="/collections/marcas" class="hdr-nav__link">
-          Marcas
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
-        </a>
-        <div class="hdr-mega hdr-mega--brands">
-          <div class="hdr-mega__inner container">
-            <div class="hdr-mega__brands-grid">
-              <a href="/collections/loreal"     class="hdr-mega__brand-card">L'Oréal</a>
-              <a href="/collections/revlon"     class="hdr-mega__brand-card">Revlon</a>
-              <a href="/collections/ogx"        class="hdr-mega__brand-card">OGX</a>
-              <a href="/collections/tio-nacho"  class="hdr-mega__brand-card">Tío Nacho</a>
-              <a href="/collections/savar"      class="hdr-mega__brand-card">Savar</a>
-              <a href="/collections/pantene"    class="hdr-mega__brand-card">Pantene</a>
-              <a href="/collections/sedal"      class="hdr-mega__brand-card">Sedal</a>
-              <a href="/collections/wella"      class="hdr-mega__brand-card">Wella</a>
-              <a href="/collections/kerastase"  class="hdr-mega__brand-card">Kérastase</a>
-              <a href="/collections/weleda"     class="hdr-mega__brand-card">Weleda</a>
-              <a href="/collections/natura"     class="hdr-mega__brand-card">Natura</a>
-              <a href="/collections/payot"      class="hdr-mega__brand-card">Payot</a>
-              <a href="/collections/anyeluz"    class="hdr-mega__brand-card">Anyeluz</a>
-              <a href="/collections/atenea"     class="hdr-mega__brand-card">Atenea</a>
-              <a href="/collections/montoc"     class="hdr-mega__brand-card">Montoc</a>
-              <a href="/collections/milagros"   class="hdr-mega__brand-card">Milagros</a>
-            </div>
-            <div class="hdr-mega__promo">
-              <a href="/collections/marcas" class="hdr-mega__promo-link">
-                Ver todas las marcas
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- CAPILAR — mega menu -->
-      <div class="hdr-nav__item">
-        <a href="/collections/capilar" class="hdr-nav__link">
-          Cuidado Capilar
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
-        </a>
+        <a href="/collections/maquillaje" class="hdr-nav__link">Maquillaje</a>
         <div class="hdr-mega">
           <div class="hdr-mega__inner container">
             <div class="hdr-mega__col">
-              <p class="hdr-mega__label">Por tipo de producto</p>
-              <a href="/collections/shampoo"           class="hdr-mega__link">Shampoo</a>
-              <a href="/collections/acondicionador"    class="hdr-mega__link">Acondicionador</a>
-              <a href="/collections/tratamientos"      class="hdr-mega__link">Tratamientos</a>
-              <a href="/collections/mascarillas-capilar" class="hdr-mega__link">Mascarillas capilares</a>
-              <a href="/collections/tintes"            class="hdr-mega__link">Tintes y coloracion</a>
-              <a href="/collections/aceites-capilar"   class="hdr-mega__link">Aceites capilares</a>
-              <a href="/collections/estilizado"        class="hdr-mega__link">Productos de estilizado</a>
+              <p class="hdr-mega__label">Por marca</p>
+              {% for brand in brands_maquillaje %}
+                <a href="/collections/maquillaje?filter.p.vendor={{ brand | url_encode }}" class="hdr-mega__link">{{ brand }}</a>
+              {% endfor %}
             </div>
-            <div class="hdr-mega__promo">
-              <a href="/collections/capilar" class="hdr-mega__promo-link">
-                Ver todo Capilar
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- MAQUILLAJE — mega menu -->
-      <div class="hdr-nav__item">
-        <a href="/collections/maquillaje" class="hdr-nav__link">
-          Maquillaje
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
-        </a>
-        <div class="hdr-mega">
-          <div class="hdr-mega__inner container">
             <div class="hdr-mega__col">
               <p class="hdr-mega__label">Por zona</p>
               <a href="/collections/maquillaje-rostro"  class="hdr-mega__link">Rostro</a>
               <a href="/collections/maquillaje-ojos"    class="hdr-mega__link">Ojos</a>
               <a href="/collections/maquillaje-labios"  class="hdr-mega__link">Labios</a>
-            </div>
-            <div class="hdr-mega__col">
-              <p class="hdr-mega__label">Herramientas</p>
               <a href="/collections/brochas"            class="hdr-mega__link">Brochas y pinceles</a>
               <a href="/collections/accesorios-makeup"  class="hdr-mega__link">Accesorios</a>
-              <a href="/collections/esponjas"           class="hdr-mega__link">Esponjas</a>
             </div>
             <div class="hdr-mega__promo">
               <a href="/collections/maquillaje" class="hdr-mega__promo-link">
@@ -163,22 +121,55 @@
         </div>
       </div>
 
-      <!-- DERMOCOSMETICOS — mega menu -->
+      <!-- Capilar -->
       <div class="hdr-nav__item">
-        <a href="/collections/dermocosmeticos" class="hdr-nav__link">
-          Dermocosméticos
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
-        </a>
+        <a href="/collections/capilar" class="hdr-nav__link">Cuidado Capilar</a>
         <div class="hdr-mega">
           <div class="hdr-mega__inner container">
             <div class="hdr-mega__col">
-              <p class="hdr-mega__label">Cuidado facial</p>
-              <a href="/collections/cremas-faciales"    class="hdr-mega__link">Cremas faciales</a>
-              <a href="/collections/serums"             class="hdr-mega__link">Serums</a>
-              <a href="/collections/protector-solar"    class="hdr-mega__link">Protector solar</a>
+              <p class="hdr-mega__label">Por marca</p>
+              {% for brand in brands_capilar %}
+                <a href="/collections/capilar?filter.p.vendor={{ brand | url_encode }}" class="hdr-mega__link">{{ brand }}</a>
+              {% endfor %}
+            </div>
+            <div class="hdr-mega__col">
+              <p class="hdr-mega__label">Tipo de producto</p>
+              <a href="/collections/shampoo"              class="hdr-mega__link">Shampoo</a>
+              <a href="/collections/acondicionador"       class="hdr-mega__link">Acondicionador</a>
+              <a href="/collections/tratamientos"         class="hdr-mega__link">Tratamientos</a>
+              <a href="/collections/mascarillas-capilar"  class="hdr-mega__link">Mascarillas capilares</a>
+              <a href="/collections/tintes"               class="hdr-mega__link">Tintes y coloracion</a>
+              <a href="/collections/aceites-capilar"      class="hdr-mega__link">Aceites capilares</a>
+            </div>
+            <div class="hdr-mega__promo">
+              <a href="/collections/capilar" class="hdr-mega__promo-link">
+                Ver todo Capilar
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dermocosméticos -->
+      <div class="hdr-nav__item">
+        <a href="/collections/dermocosmeticos" class="hdr-nav__link">Dermocosméticos</a>
+        <div class="hdr-mega">
+          <div class="hdr-mega__inner container">
+            <div class="hdr-mega__col">
+              <p class="hdr-mega__label">Por marca</p>
+              {% for brand in brands_dermos %}
+                <a href="/collections/dermocosmeticos?filter.p.vendor={{ brand | url_encode }}" class="hdr-mega__link">{{ brand }}</a>
+              {% endfor %}
+            </div>
+            <div class="hdr-mega__col">
+              <p class="hdr-mega__label">Tipo de producto</p>
+              <a href="/collections/cremas-faciales"     class="hdr-mega__link">Cremas faciales</a>
+              <a href="/collections/serums"              class="hdr-mega__link">Serums</a>
+              <a href="/collections/protector-solar"     class="hdr-mega__link">Protector solar</a>
               <a href="/collections/mascarillas-faciales" class="hdr-mega__link">Mascarillas faciales</a>
-              <a href="/collections/contorno-ojos"      class="hdr-mega__link">Contorno de ojos</a>
-              <a href="/collections/accesorios-dermo"   class="hdr-mega__link">Accesorios</a>
+              <a href="/collections/contorno-ojos"       class="hdr-mega__link">Contorno de ojos</a>
+              <a href="/collections/accesorios-dermo"    class="hdr-mega__link">Accesorios</a>
             </div>
             <div class="hdr-mega__promo">
               <a href="/collections/dermocosmeticos" class="hdr-mega__promo-link">
@@ -190,108 +181,52 @@
         </div>
       </div>
 
-      <!-- SKIN CARE -->
-      <a href="/collections/skin-care" class="hdr-nav__link">Skin Care</a>
-
-      <!-- NOVEDADES -->
       <a href="/collections/novedades" class="hdr-nav__link">Novedades</a>
-
-      <!-- OFERTAS -->
       <a href="/collections/ofertas" class="hdr-nav__link hdr-nav__link--sale">Ofertas</a>
-
     </div>
   </nav>
 
-  <!-- Mobile menu -->
-  <div id="mobile-menu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Menu">
+  <!-- ── Mobile menu ───────────────────────────────────────── -->
+  <div id="mobile-menu" class="mobile-menu" role="dialog" aria-label="Menú">
     <div class="mobile-menu__head">
-      <span class="mobile-menu__title">Menu</span>
-      <button id="mobile-menu-close" class="hdr-icon-btn" aria-label="Cerrar">
+      <span class="mobile-menu__title">Menú</span>
+      <button id="mobile-menu-close" class="hdr-icon-btn" aria-label="Cerrar menú">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
+
     <div class="mobile-search-wrap">
-      <form action="{{ routes.search_url }}" method="get" class="mobile-search-form">
+      <form action="{{ routes.search_url }}" method="get" role="search" class="mobile-search-form">
         <input type="search" name="q" placeholder="Buscar..." class="mobile-search-input">
         <button type="submit" class="mobile-search-btn" aria-label="Buscar">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         </button>
       </form>
     </div>
+
     <nav class="mobile-nav">
-      <a href="{{ routes.root_url }}" class="mobile-nav-link">Inicio</a>
+      {% assign mob_cats   = 'capilar,maquillaje,dermocosmeticos' | split: ',' %}
+      {% assign mob_labels = 'Cuidado Capilar,Maquillaje,Dermocosméticos' | split: ',' %}
 
-      <!-- Marcas accordion -->
-      <div class="mobile-acc">
-        <button class="mobile-accordion-header" aria-expanded="false">
-          <span>Marcas</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
-        <div class="mobile-brand-list">
-          <a href="/collections/marcas"    class="mobile-brand-see-all">Ver todas las marcas</a>
-          <a href="/collections/loreal"    class="mobile-brand-link">L'Oreal</a>
-          <a href="/collections/revlon"    class="mobile-brand-link">Revlon</a>
-          <a href="/collections/ogx"       class="mobile-brand-link">OGX</a>
-          <a href="/collections/tio-nacho" class="mobile-brand-link">Tio Nacho</a>
-          <a href="/collections/savar"     class="mobile-brand-link">Savar</a>
-          <a href="/collections/pantene"   class="mobile-brand-link">Pantene</a>
-          <a href="/collections/wella"     class="mobile-brand-link">Wella</a>
-          <a href="/collections/kerastase" class="mobile-brand-link">Kerastase</a>
+      {% for i in (0..2) %}
+        <div class="mobile-acc">
+          <button class="mobile-accordion-header" aria-expanded="false">
+            <span>{{ mob_labels[i] }}</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="mobile-brand-list">
+            <a href="/collections/{{ mob_cats[i] }}" class="mobile-brand-see-all">Ver todo {{ mob_labels[i] }}</a>
+            {% if i == 0 %}{% for b in brands_capilar %}<a href="/collections/{{ mob_cats[i] }}?filter.p.vendor={{ b | url_encode }}" class="mobile-brand-link">{{ b }}</a>{% endfor %}
+            {% elsif i == 1 %}{% for b in brands_maquillaje %}<a href="/collections/{{ mob_cats[i] }}?filter.p.vendor={{ b | url_encode }}" class="mobile-brand-link">{{ b }}</a>{% endfor %}
+            {% else %}{% for b in brands_dermos %}<a href="/collections/{{ mob_cats[i] }}?filter.p.vendor={{ b | url_encode }}" class="mobile-brand-link">{{ b }}</a>{% endfor %}
+            {% endif %}
+          </div>
         </div>
-      </div>
+      {% endfor %}
 
-      <!-- Capilar accordion -->
-      <div class="mobile-acc">
-        <button class="mobile-accordion-header" aria-expanded="false">
-          <span>Cuidado Capilar</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
-        <div class="mobile-brand-list">
-          <a href="/collections/capilar"           class="mobile-brand-see-all">Ver todo Capilar</a>
-          <a href="/collections/shampoo"           class="mobile-brand-link">Shampoo</a>
-          <a href="/collections/acondicionador"    class="mobile-brand-link">Acondicionador</a>
-          <a href="/collections/tratamientos"      class="mobile-brand-link">Tratamientos</a>
-          <a href="/collections/mascarillas-capilar" class="mobile-brand-link">Mascarillas capilares</a>
-          <a href="/collections/tintes"            class="mobile-brand-link">Tintes y coloracion</a>
-          <a href="/collections/aceites-capilar"   class="mobile-brand-link">Aceites capilares</a>
-        </div>
-      </div>
 
-      <!-- Maquillaje accordion -->
-      <div class="mobile-acc">
-        <button class="mobile-accordion-header" aria-expanded="false">
-          <span>Maquillaje</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
-        <div class="mobile-brand-list">
-          <a href="/collections/maquillaje"         class="mobile-brand-see-all">Ver todo Maquillaje</a>
-          <a href="/collections/maquillaje-rostro"  class="mobile-brand-link">Rostro</a>
-          <a href="/collections/maquillaje-ojos"    class="mobile-brand-link">Ojos</a>
-          <a href="/collections/maquillaje-labios"  class="mobile-brand-link">Labios</a>
-          <a href="/collections/brochas"            class="mobile-brand-link">Brochas y pinceles</a>
-          <a href="/collections/accesorios-makeup"  class="mobile-brand-link">Accesorios</a>
-        </div>
-      </div>
-
-      <!-- Dermocosmeticos accordion -->
-      <div class="mobile-acc">
-        <button class="mobile-accordion-header" aria-expanded="false">
-          <span>Dermocosmeticos</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
-        <div class="mobile-brand-list">
-          <a href="/collections/dermocosmeticos"     class="mobile-brand-see-all">Ver todo Dermocosmeticos</a>
-          <a href="/collections/cremas-faciales"     class="mobile-brand-link">Cremas faciales</a>
-          <a href="/collections/serums"              class="mobile-brand-link">Serums</a>
-          <a href="/collections/protector-solar"     class="mobile-brand-link">Protector solar</a>
-          <a href="/collections/mascarillas-faciales" class="mobile-brand-link">Mascarillas faciales</a>
-          <a href="/collections/accesorios-dermo"    class="mobile-brand-link">Accesorios</a>
-        </div>
-      </div>
-
-      <a href="/collections/skin-care"    class="mobile-nav-link">Skin Care</a>
-      <a href="/collections/novedades"    class="mobile-nav-link">Novedades</a>
-      <a href="/collections/ofertas"      class="mobile-nav-link mobile-nav-link--sale">Ofertas</a>
+      <a href="/collections/novedades" class="mobile-nav-link">Novedades</a>
+      <a href="/collections/ofertas" class="mobile-nav-link mobile-nav-link--sale">Ofertas</a>
     </nav>
   </div>
   <div class="mobile-overlay" id="mobile-overlay"></div>
@@ -301,24 +236,7 @@
 {% schema %}
 {
   "name": "Encabezado",
-  "settings": [
-    {
-      "type": "text",
-      "id": "search_placeholder",
-      "label": "Texto de busqueda",
-      "default": "Busca productos, marcas o categorias..."
-    },
-    {
-      "type": "url",
-      "id": "wishlist_url",
-      "label": "Enlace de Favoritos"
-    },
-    {
-      "type": "link_list",
-      "id": "main_menu",
-      "label": "Menu principal (opcional - sobreescribe los links)",
-      "default": "main-menu"
-    }
-  ]
+  "settings": [],
+  "presets": [{ "name": "Encabezado" }]
 }
 {% endschema %}

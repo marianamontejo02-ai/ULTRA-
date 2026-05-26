@@ -44,7 +44,7 @@
             <div class="cart-summary-box">
               <h2 class="cart-summary-title">Resumen del pedido</h2>
 
-              {% assign free_shipping_threshold = 15000000 %}
+              {% assign free_shipping_threshold = 150000 %}
               {% assign remaining = free_shipping_threshold | minus: cart.total_price %}
               {% if remaining > 0 %}
                 <div class="cart-shipping-bar">
@@ -55,7 +55,7 @@
                 </div>
               {% else %}
                 <div class="cart-shipping-bar cart-shipping-bar--free">
-                  <p>¡Tienes envio gratis!</p>
+                  <p>¡Tienes envío gratis! 🎉</p>
                 </div>
               {% endif %}
 

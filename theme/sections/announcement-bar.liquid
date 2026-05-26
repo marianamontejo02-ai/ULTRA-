@@ -1,4 +1,4 @@
-{% if section.settings.show_bar and section.blocks.size > 0 %}
+{% if section.settings.show_bar %}
 <div id="announcement-bar" class="announcement-bar" role="region" aria-label="Anuncio">
   {% for block in section.blocks %}
     <span class="announcement-bar__text" data-announcement style="display:none">
@@ -23,6 +23,16 @@
       "name": "Anuncio",
       "settings": [
         { "type": "text", "id": "text", "label": "Texto del anuncio", "default": "🚚 Envío GRATIS en compras desde $150.000" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Barra de anuncios",
+      "blocks": [
+        { "type": "announcement", "settings": { "text": "🚚 Envío GRATIS en compras desde $150.000 a todo Colombia" } },
+        { "type": "announcement", "settings": { "text": "✨ Nuevas llegadas — ¡Descúbrelas!" } },
+        { "type": "announcement", "settings": { "text": "💳 Paga con Nequi, PSE o tarjeta — Hasta 12 cuotas sin interés" } }
       ]
     }
   ]

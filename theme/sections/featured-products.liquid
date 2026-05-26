@@ -1,85 +1,31 @@
-<section class="section fp-section" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;background:{{ section.settings.bg_color }};">
+<section class="section" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;">
   <div class="container">
-
     <div class="section-head section-head--split">
       <div>
-        {% if section.settings.eyebrow != blank %}
-          <p class="section-eyebrow">{{ section.settings.eyebrow }}</p>
-        {% endif %}
-        {% if section.settings.title != blank %}
-          <h2 class="section-title">{{ section.settings.title }}</h2>
-        {% endif %}
+        <p class="section-eyebrow">{{ section.settings.eyebrow }}</p>
+        <h2 class="section-title">{{ section.settings.title }}</h2>
         {% if section.settings.subtitle != blank %}
           <p class="section-subtitle">{{ section.settings.subtitle }}</p>
         {% endif %}
       </div>
-      {% if section.settings.btn_text != blank %}
-        <a href="{{ section.settings.btn_url }}" class="see-all-link">
-          {{ section.settings.btn_text }}
+      {% if section.settings.view_all_url != blank %}
+        <a href="{{ section.settings.view_all_url }}" class="see-all-link">
+          Ver todos
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
       {% endif %}
     </div>
 
-    {% comment %}
-      Fuente de productos:
-      1. Colección elegida en el selector
-      2. Si no hay colección: muestra todos los productos de la tienda
-    {% endcomment %}
-    {% if section.settings.collection != blank %}
-      {% assign product_list = collections[section.settings.collection].products %}
-    {% else %}
-      {% assign product_list = collections.all.products %}
-    {% endif %}
-
-    {% comment %} Count products to decide empty state {% endcomment %}
-    {% assign has_products = false %}
-    {% for p in product_list limit: 1 %}
-      {% assign has_products = true %}
-    {% endfor %}
-
-    {% if has_products %}
-      {% if section.settings.scroll_mode %}
-        <!-- Modo scroll horizontal (como Ulta "trending") -->
-        <div class="fp-scroll-wrap">
-          <div class="fp-scroll-track">
-            {% for product in product_list limit: section.settings.products_count %}
-              {% render 'product-card', card_product: product %}
-            {% endfor %}
-          </div>
-          <button class="fp-scroll-btn fp-scroll-btn--prev" aria-label="Anterior">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-          </button>
-          <button class="fp-scroll-btn fp-scroll-btn--next" aria-label="Siguiente">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-          </button>
-        </div>
+    {% assign product_list = section.settings.collection.products | default: collections['all'].products %}
+    <div class="product-grid">
+      {% for product in product_list limit: section.settings.products_count %}
+        {% render 'product-card', card_product: product %}
       {% else %}
-        <!-- Modo grilla normal -->
-        <div class="pcard-grid pcard-grid--home">
-          {% for product in product_list limit: section.settings.products_count %}
-            {% render 'product-card', card_product: product %}
-          {% endfor %}
-        </div>
-      {% endif %}
-    {% else %}
-      <!-- Estado vacío bonito -->
-      <div class="fp-empty-state">
-        <div class="fp-empty-icon">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-        </div>
-        <h3 class="fp-empty-title">Tus productos aparecerán aquí</h3>
-        <p class="fp-empty-desc">Agrega productos a tu tienda o selecciona una colección en la configuración de esta sección.</p>
-        <a href="/admin/products/new" class="fp-empty-btn">Agregar productos</a>
-      </div>
-    {% endif %}
-
-    {% if section.settings.cta_text != blank %}
-      <div class="fp-cta-wrap">
-        <a href="{{ section.settings.cta_url }}" class="fp-cta-btn">{{ section.settings.cta_text }}</a>
-      </div>
-    {% endif %}
-
+        <p style="color:var(--text-muted);grid-column:1/-1;text-align:center;padding:40px 0">
+          Agrega productos a la colección "{{ section.settings.collection.title }}" para que aparezcan aquí.
+        </p>
+      {% endfor %}
+    </div>
   </div>
 </section>
 
@@ -87,55 +33,14 @@
 {
   "name": "Productos destacados",
   "settings": [
-    {
-      "type": "header",
-      "content": "Encabezado de la sección"
-    },
-    { "type": "text",   "id": "eyebrow",   "label": "Texto pequeño (eyebrow)",    "default": "Lo más vendido" },
-    { "type": "text",   "id": "title",     "label": "Título",                     "default": "Más vendidos" },
-    { "type": "text",   "id": "subtitle",  "label": "Subtítulo",                  "default": "Los favoritos de nuestra comunidad" },
-    { "type": "text",   "id": "btn_text",  "label": "Texto del enlace 'Ver todo'", "default": "Ver todos" },
-    { "type": "url",    "id": "btn_url",   "label": "Enlace del botón 'Ver todo'" },
-    {
-      "type": "header",
-      "content": "Productos"
-    },
-    {
-      "type": "collection",
-      "id": "collection",
-      "label": "Colección de productos",
-      "info": "Si no seleccionas ninguna, se muestran todos los productos de la tienda"
-    },
-    {
-      "type": "range",
-      "id": "products_count",
-      "label": "Cantidad de productos",
-      "min": 2, "max": 16, "step": 1, "default": 8
-    },
-    {
-      "type": "checkbox",
-      "id": "scroll_mode",
-      "label": "Modo scroll horizontal (tipo carrusel)",
-      "default": false
-    },
-    {
-      "type": "header",
-      "content": "Botón inferior (opcional)"
-    },
-    { "type": "text", "id": "cta_text", "label": "Texto del botón", "default": "" },
-    { "type": "url",  "id": "cta_url",  "label": "Enlace del botón" },
-    {
-      "type": "header",
-      "content": "Diseño"
-    },
-    {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Color de fondo",
-      "default": "#ffffff"
-    },
-    { "type": "range", "id": "padding_top",    "label": "Espacio superior (px)", "min": 0, "max": 120, "step": 8, "default": 64 },
-    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 120, "step": 8, "default": 64 }
+    { "type": "text",       "id": "eyebrow",        "label": "Texto superior",  "default": "Lo más vendido" },
+    { "type": "text",       "id": "title",          "label": "Título",          "default": "Más vendidos" },
+    { "type": "text",       "id": "subtitle",       "label": "Subtítulo",       "default": "Los favoritos de nuestra comunidad" },
+    { "type": "collection", "id": "collection",     "label": "Colección" },
+    { "type": "range",      "id": "products_count", "label": "Número de productos", "min": 2, "max": 12, "step": 1, "default": 8 },
+    { "type": "url",        "id": "view_all_url",   "label": "Enlace ver todos" },
+    { "type": "range",      "id": "padding_top",    "label": "Relleno superior", "min": 0, "max": 100, "step": 4, "default": 64 },
+    { "type": "range",      "id": "padding_bottom", "label": "Relleno inferior", "min": 0, "max": 100, "step": 4, "default": 64 }
   ],
   "presets": [{ "name": "Productos destacados" }]
 }
