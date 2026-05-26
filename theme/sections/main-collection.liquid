@@ -105,20 +105,61 @@
 </div>
 
 <script>
+// Restaurar estado de checkboxes al cargar
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  // Marcas activas
+  var activeVendors = params.getAll('filter.p.vendor');
+  document.querySelectorAll('.filter-vendor-cb').forEach(function(cb) {
+    if (activeVendors.includes(cb.value)) cb.checked = true;
+  });
+  // Precio activo
+  var priceLte = params.get('filter.v.price.lte');
+  if (priceLte) {
+    document.querySelectorAll('.filter-price-cb').forEach(function(cb) {
+      if (cb.value === '0-' + priceLte) cb.checked = true;
+    });
+  }
+})();
+
+// Ordenar
 document.getElementById('sort-select')?.addEventListener('change', function() {
   var url = new URL(window.location.href);
   url.searchParams.set('sort_by', this.value);
   window.location.href = url.toString();
 });
+
+// Filtro por marca — selección múltiple
 document.querySelectorAll('.filter-vendor-cb').forEach(function(cb) {
   cb.addEventListener('change', function() {
     var checked = Array.from(document.querySelectorAll('.filter-vendor-cb:checked')).map(function(c){ return c.value; });
     var url = new URL(window.location.href);
-    if (checked.length) { url.searchParams.set('filter.p.vendor', checked[0]); }
-    else { url.searchParams.delete('filter.p.vendor'); }
+    url.searchParams.delete('filter.p.vendor');
+    checked.forEach(function(v) { url.searchParams.append('filter.p.vendor', v); });
     window.location.href = url.toString();
   });
 });
+
+// Filtro por precio — solo una opción a la vez
+document.querySelectorAll('.filter-price-cb').forEach(function(cb) {
+  cb.addEventListener('change', function() {
+    // Desmarcar las demás opciones de precio
+    document.querySelectorAll('.filter-price-cb').forEach(function(other) {
+      if (other !== cb) other.checked = false;
+    });
+    var url = new URL(window.location.href);
+    url.searchParams.delete('filter.v.price.gte');
+    url.searchParams.delete('filter.v.price.lte');
+    if (cb.checked) {
+      var parts = cb.value.split('-');
+      url.searchParams.set('filter.v.price.gte', parts[0]);
+      url.searchParams.set('filter.v.price.lte', parts[1]);
+    }
+    window.location.href = url.toString();
+  });
+});
+
+// Abrir/cerrar grupos de filtros
 document.querySelectorAll('.filter-group__toggle').forEach(function(btn) {
   btn.addEventListener('click', function() {
     var expanded = btn.getAttribute('aria-expanded') === 'true';
@@ -127,10 +168,14 @@ document.querySelectorAll('.filter-group__toggle').forEach(function(btn) {
     btn.classList.toggle('collapsed', expanded);
   });
 });
+
+// Sidebar en móvil
 document.getElementById('filter-toggle-btn')?.addEventListener('click', function() {
   document.getElementById('coll-sidebar').classList.toggle('open');
   this.setAttribute('aria-expanded', document.getElementById('coll-sidebar').classList.contains('open'));
 });
+
+// Limpiar todos los filtros
 document.getElementById('clear-filters-btn')?.addEventListener('click', function() {
   window.location.href = window.location.pathname;
 });
