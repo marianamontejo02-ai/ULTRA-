@@ -1209,7 +1209,6 @@ ul { list-style: none; }
 }
 .popup-visual__circle { position: absolute; width: 280px; height: 280px; border-radius: 50%; background: rgba(255,255,255,.1); top: -60px; left: -60px; }
 .popup-visual__emoji { font-size: 56px; position: relative; z-index: 1; animation: emojiSpin 3s ease-in-out infinite; }
-.popup-visual__text { font-size: 32px; font-weight: 900; color: #fff; position: relative; z-index: 1; text-align: center; line-height: 1.1; }
 @keyframes emojiSpin { 0%,100%{transform:rotate(-8deg) scale(1)} 50%{transform:rotate(8deg) scale(1.1)} }
 .popup-badge-float {
   position: absolute; background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.3);
