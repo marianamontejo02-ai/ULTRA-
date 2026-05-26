@@ -88,8 +88,9 @@
       <span class="pcard__stars" aria-hidden="true">
         {% assign full = rating_seed | divided_by: 10 | floor %}
         {% assign dec  = rating_seed | modulo: 10 %}
+        {% assign full_plus_one = full | plus: 1 %}
         {% for i in (1..5) %}
-          {% if i <= full %}<svg class="star star--full" width="12" height="12" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/></svg>{% elsif i == full | plus: 1 and dec >= 5 %}<svg class="star star--half" width="12" height="12" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor" opacity=".5"/></svg>{% else %}<svg class="star star--empty" width="12" height="12" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>{% endif %}
+          {% if i <= full %}<svg class="star star--full" width="12" height="12" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/></svg>{% elsif i == full_plus_one and dec >= 5 %}<svg class="star star--half" width="12" height="12" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor" opacity=".5"/></svg>{% else %}<svg class="star star--empty" width="12" height="12" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>{% endif %}
         {% endfor %}
       </span>
       <span class="pcard__rating-num">{{ rating_seed | divided_by: 10.0 }}</span>
