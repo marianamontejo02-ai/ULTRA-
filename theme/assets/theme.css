@@ -224,6 +224,10 @@ ul { list-style: none; }
 }
 .hdr-nav__item:hover .hdr-mega { display: block; }
 .hdr-mega__inner { display: grid; grid-template-columns: 1fr 1fr auto; gap: 32px; }
+/* Mega menu de 2 columnas de categorias + promo */
+.hdr-mega--brands .hdr-mega__inner { grid-template-columns: 1fr auto; }
+/* Cuando solo hay 1 columna de categorias */
+.hdr-mega__inner--single { grid-template-columns: 1fr auto; }
 .hdr-mega__col {}
 .hdr-mega__label {
   font-size: 10px; font-weight: 800; text-transform: uppercase;
@@ -244,6 +248,22 @@ ul { list-style: none; }
   transition: gap .15s;
 }
 .hdr-mega__promo-link:hover { gap: 10px; }
+
+/* Mega menu grid de marcas */
+.hdr-mega--brands { max-width: 820px; }
+.hdr-mega__brands-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px 12px;
+}
+.hdr-mega__brand-card {
+  display: block; padding: 8px 12px; font-size: 13px; font-weight: 600;
+  color: var(--text-muted); border: 1px solid var(--border);
+  border-radius: 8px; text-align: center; transition: all .15s;
+  text-decoration: none; white-space: nowrap;
+}
+.hdr-mega__brand-card:hover {
+  color: var(--ultra); border-color: var(--ultra);
+  background: var(--ultra-50); transform: translateY(-1px);
+}
 
 /* Mobile header */
 #menu-toggle { display: flex; }
@@ -683,6 +703,42 @@ ul { list-style: none; }
 .brand-bar__track { display: flex; gap: 16px; align-items: center; width: max-content; animation: ticker 30s linear infinite; }
 .brand-bar__item { display: flex; flex-direction: column; align-items: center; gap: 4px; flex-shrink: 0; padding: 10px 20px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow); min-width: 90px; text-align: center; }
 .brand-bar__name { font-size: 12px; font-weight: 700; color: var(--text-muted); white-space: nowrap; }
+
+/* ─── Brands Showcase ────────────────────────────────────── */
+.brands-showcase__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+@media(min-width:480px) { .brands-showcase__grid { grid-template-columns: repeat(3, 1fr); } }
+@media(min-width:768px) { .brands-showcase__grid { grid-template-columns: repeat(4, 1fr); } }
+@media(min-width:1024px){ .brands-showcase__grid { grid-template-columns: repeat(6, 1fr); gap: 20px; } }
+
+.brand-showcase-card {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; padding: 20px 12px; background: #fff;
+  border: 1.5px solid var(--border); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow); text-decoration: none;
+  transition: all .2s; position: relative; min-height: 90px;
+}
+.brand-showcase-card:hover {
+  border-color: var(--ultra); box-shadow: var(--shadow-ultra);
+  transform: translateY(-3px);
+}
+.brand-showcase-card__img { display: flex; align-items: center; justify-content: center; }
+.brand-showcase-card__img img { max-height: 60px; width: auto; object-fit: contain; filter: grayscale(30%); transition: filter .2s; }
+.brand-showcase-card:hover .brand-showcase-card__img img { filter: grayscale(0); }
+.brand-showcase-card__text {
+  font-size: 14px; font-weight: 800; color: var(--text-muted);
+  letter-spacing: -.3px; text-align: center;
+}
+.brand-showcase-card:hover .brand-showcase-card__text { color: var(--ultra); }
+.brand-showcase-card__badge {
+  position: absolute; top: 8px; right: 8px;
+  font-size: 9px; font-weight: 800; text-transform: uppercase;
+  background: var(--ultra); color: #fff;
+  padding: 2px 6px; border-radius: 99px; letter-spacing: .06em;
+}
 
 /* ─── Social Proof ───────────────────────────────────────── */
 .reviews-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }

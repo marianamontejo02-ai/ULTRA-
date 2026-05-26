@@ -50,6 +50,33 @@
       }
     },
     "brand-bar": { "type": "brand-bar" },
+    "brands-showcase": {
+      "type": "brands-showcase",
+      "settings": {
+        "eyebrow": "Marcas seleccionadas",
+        "title": "Las mejores marcas, al mejor precio",
+        "subtitle": "Distribuidor oficial de las marcas que mas amas",
+        "btn_text": "Ver todas las marcas",
+        "bg_color": "#fafafa",
+        "padding_top": 64,
+        "padding_bottom": 64
+      },
+      "blocks": {
+        "b1":  { "type": "brand", "settings": { "name": "L'Oreal"   } },
+        "b2":  { "type": "brand", "settings": { "name": "Revlon"    } },
+        "b3":  { "type": "brand", "settings": { "name": "OGX"       } },
+        "b4":  { "type": "brand", "settings": { "name": "Tio Nacho" } },
+        "b5":  { "type": "brand", "settings": { "name": "Savar"     } },
+        "b6":  { "type": "brand", "settings": { "name": "Pantene"   } },
+        "b7":  { "type": "brand", "settings": { "name": "Wella"     } },
+        "b8":  { "type": "brand", "settings": { "name": "Kerastase" } },
+        "b9":  { "type": "brand", "settings": { "name": "Weleda"    } },
+        "b10": { "type": "brand", "settings": { "name": "Natura"    } },
+        "b11": { "type": "brand", "settings": { "name": "Payot"     } },
+        "b12": { "type": "brand", "settings": { "name": "Anyeluz"   } }
+      },
+      "block_order": ["b1","b2","b3","b4","b5","b6","b7","b8","b9","b10","b11","b12"]
+    },
     "novedades": {
       "type": "featured-products",
       "settings": {
@@ -84,5 +111,5 @@
       "block_order": ["rv1", "rv2", "rv3", "rv4"]
     }
   },
-  "order": ["hero", "categories", "featured", "brand-bar", "novedades", "reviews"]
+  "order": ["hero", "categories", "featured", "brand-bar", "brands-showcase", "novedades", "reviews"]
 }

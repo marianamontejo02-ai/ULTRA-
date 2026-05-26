@@ -1,0 +1,88 @@
+<section class="brands-showcase section-padding" style="background:{{ section.settings.bg_color }}; padding-top:{{ section.settings.padding_top }}px; padding-bottom:{{ section.settings.padding_bottom }}px;">
+  <div class="container">
+
+    <div class="section-header" style="text-align:center;margin-bottom:40px;">
+      {% if section.settings.eyebrow != blank %}
+        <p class="section-eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+      {% if section.settings.title != blank %}
+        <h2 class="section-title">{{ section.settings.title }}</h2>
+      {% endif %}
+      {% if section.settings.subtitle != blank %}
+        <p class="section-subtitle">{{ section.settings.subtitle }}</p>
+      {% endif %}
+    </div>
+
+    <div class="brands-showcase__grid">
+      {% for block in section.blocks %}
+        <a href="{{ block.settings.url | default: '/collections/' | append: block.settings.name | downcase | replace: ' ', '-' }}"
+           class="brand-showcase-card" {{ block.shopify_attributes }}>
+          {% if block.settings.logo != blank %}
+            <div class="brand-showcase-card__img">
+              <img src="{{ block.settings.logo | image_url: width: 200 }}"
+                   alt="{{ block.settings.name }}"
+                   width="200" height="80" loading="lazy">
+            </div>
+          {% else %}
+            <div class="brand-showcase-card__text">{{ block.settings.name }}</div>
+          {% endif %}
+          {% if block.settings.badge != blank %}
+            <span class="brand-showcase-card__badge">{{ block.settings.badge }}</span>
+          {% endif %}
+        </a>
+      {% endfor %}
+    </div>
+
+    {% if section.settings.btn_text != blank %}
+      <div style="text-align:center;margin-top:36px;">
+        <a href="{{ section.settings.btn_url | default: '/collections/marcas' }}" class="btn-outline">
+          {{ section.settings.btn_text }}
+        </a>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Vitrina de Marcas",
+  "settings": [
+    { "type": "text",   "id": "eyebrow",  "label": "Texto superior",  "default": "Marcas seleccionadas" },
+    { "type": "text",   "id": "title",    "label": "Titulo",           "default": "Las mejores marcas, al mejor precio" },
+    { "type": "text",   "id": "subtitle", "label": "Subtitulo",        "default": "Distribuidor oficial de las marcas que mas amas" },
+    { "type": "text",   "id": "btn_text", "label": "Texto del boton",  "default": "Ver todas las marcas" },
+    { "type": "url",    "id": "btn_url",  "label": "Link del boton" },
+    { "type": "color",  "id": "bg_color", "label": "Color de fondo",   "default": "#fafafa" },
+    { "type": "range",  "id": "padding_top",    "label": "Padding superior", "min": 0, "max": 120, "step": 8, "default": 64 },
+    { "type": "range",  "id": "padding_bottom",  "label": "Padding inferior", "min": 0, "max": 120, "step": 8, "default": 64 }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Marca",
+      "settings": [
+        { "type": "text",  "id": "name",  "label": "Nombre de la marca", "default": "L'Oreal" },
+        { "type": "image_picker", "id": "logo", "label": "Logo de la marca" },
+        { "type": "url",   "id": "url",   "label": "Link de la coleccion" },
+        { "type": "text",  "id": "badge", "label": "Etiqueta (ej: Nuevo, Top)", "default": "" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vitrina de Marcas",
+      "blocks": [
+        { "type": "brand", "settings": { "name": "L'Oreal"    } },
+        { "type": "brand", "settings": { "name": "Revlon"     } },
+        { "type": "brand", "settings": { "name": "OGX"        } },
+        { "type": "brand", "settings": { "name": "Tio Nacho"  } },
+        { "type": "brand", "settings": { "name": "Savar"      } },
+        { "type": "brand", "settings": { "name": "Pantene"    } },
+        { "type": "brand", "settings": { "name": "Wella"      } },
+        { "type": "brand", "settings": { "name": "Kerastase"  } }
+      ]
+    }
+  ]
+}
+{% endschema %}
