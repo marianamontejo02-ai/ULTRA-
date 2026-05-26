@@ -319,15 +319,16 @@ add_body(doc,
     'Este le habla de su negocio:')
 
 dark_box(doc,
-    '"Tus clientes ya piden Trululu — Edición Estelar solo hay que ponerla donde la vean. '
-    'No te pido que la vendas: te pido que la pongas. '
-    'Con 48 unidades y la bonificación incluida, recuperas tu inversión antes de que se '
-    'acabe la semana. Y el que no la tenga... le regala la venta al de enfrente."',
+    '"Tus clientes ya te compran Trululu — eso significa que confían en ti para la categoría. '
+    'Edición Estelar es la nueva referencia especial que ellos van a empezar a buscar. '
+    'Si no la tienes, no pierden la compra de Trululu regular — pero salen a buscar la Estelar '
+    'a otra tienda. Y cuando encuentran la Estelar allá... pueden quedarse comprando todo allá."',
     before=4, after=6)
 
 add_body(doc,
-    '▸  La clave del argumento es el riesgo de oportunidad, no el beneficio del producto. '
-    'Al tendero le duele más perder una venta que ganar un bono.',
+    '▸  El argumento no amenaza la venta actual de Trululu — la respeta. '
+    'Lo que señala es el riesgo de ceder tráfico de un cliente fiel a la competencia '
+    'por no tener una referencia que sí es fácil de conseguir.',
     indent=True, color=DARK, size=10, italic=True)
 
 
