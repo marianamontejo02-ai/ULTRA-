@@ -57,7 +57,7 @@
           <a href="/collections/dermocosmeticos"   class="footer-link">Dermocosméticos</a>
           <a href="/collections/skin-care"         class="footer-link">Skin Care</a>
           <a href="/collections/novedades"         class="footer-link">Novedades</a>
-          <a href="/collections/ofertas"           class="footer-link">Ofertas 🔥</a>
+          <a href="/collections/ofertas"           class="footer-link">Ofertas</a>
         </div>
 
         <!-- Información -->
@@ -101,7 +101,8 @@
       <div class="footer-bottom-inner">
         <p class="footer-copyright">© {{ 'now' | date: '%Y' }} {{ shop.name }}. Todos los derechos reservados.</p>
         <div class="footer-payments">
-          {% for method in 'Visa,Mastercard,PSE,Nequi,Bancolombia,Efecty' | split: ',' %}
+          {% assign payment_methods = 'Visa,Mastercard,PSE,Nequi,Bancolombia,Efecty' | split: ',' %}
+          {% for method in payment_methods %}
             <span class="payment-badge">{{ method }}</span>
           {% endfor %}
         </div>
