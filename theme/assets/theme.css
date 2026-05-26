@@ -121,14 +121,14 @@ ul { list-style: none; }
 .header-main { border-bottom: 1px solid var(--border); }
 .header-main__inner {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto auto 1fr auto;
   align-items: center;
   gap: 20px;
   height: 72px;
 }
 @media(max-width:767px) {
   .header-main__inner {
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto auto 1fr auto;
     gap: 10px; height: 60px;
   }
 }
