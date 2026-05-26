@@ -245,9 +245,8 @@ ul { list-style: none; }
 }
 .hdr-mega__promo-link:hover { gap: 10px; }
 
-/* Mobile header */
+/* Hamburger visible en todos los tamaños */
 #menu-toggle { display: flex; }
-@media(min-width:1024px) { #menu-toggle { display: none; } }
 
 .mobile-menu {
   position: fixed; top: 0; left: 0; bottom: 0; width: min(340px, 90vw);
