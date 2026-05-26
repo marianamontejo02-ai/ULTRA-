@@ -22,8 +22,6 @@ HEADERS = {
     "Content-Type": "application/json",
 }
 
-THEME_NAME = "ULTRA belleza"
-
 def request(method, path, body=None):
     url = f"{BASE}{path}"
     data = json.dumps(body).encode() if body else None
@@ -36,29 +34,17 @@ def request(method, path, body=None):
         print(f"  HTTP {e.code}: {err[:200]}")
         return None
 
-def get_or_create_theme():
+def get_active_theme():
+    """Siempre despliega al tema activo (role: main)."""
     resp = request("GET", "/themes.json")
     if not resp:
         sys.exit("Error al obtener los temas. Verifica el token.")
     themes = resp.get("themes", [])
-    # Find unpublished ULTRA belleza theme
     for t in themes:
-        if THEME_NAME in t.get("name", "") and t.get("role") != "main":
-            print(f"✓ Tema encontrado: {t['name']} (ID: {t['id']})")
+        if t.get("role") == "main":
+            print(f"✓ Tema activo: {t['name']} (ID: {t['id']})")
             return t["id"]
-    # Find any ULTRA belleza theme
-    for t in themes:
-        if THEME_NAME in t.get("name", ""):
-            print(f"✓ Tema encontrado: {t['name']} (ID: {t['id']}) [activo]")
-            return t["id"]
-    # Create new theme
-    print(f"→ Creando tema '{THEME_NAME}'...")
-    resp = request("POST", "/themes.json", {"theme": {"name": THEME_NAME, "role": "unpublished"}})
-    if not resp or "theme" not in resp:
-        sys.exit("No se pudo crear el tema.")
-    theme_id = resp["theme"]["id"]
-    print(f"✓ Tema creado con ID: {theme_id}")
-    return theme_id
+    sys.exit("No se encontró ningún tema activo en la tienda.")
 
 def upload_file(theme_id, key, content_bytes):
     """Upload a single file. Binary files use attachment (base64), text files use value."""
@@ -80,7 +66,7 @@ def main():
         sys.exit(f"Carpeta theme/ no encontrada: {theme_dir}")
 
     print(f"\n🚀 Conectando a {STORE}...")
-    theme_id = get_or_create_theme()
+    theme_id = get_active_theme()
 
     # Collect all files
     files = []
