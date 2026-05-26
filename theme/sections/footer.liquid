@@ -4,7 +4,7 @@
     <div class="container">
       <h3>Únete a la comunidad ULTRA belleza</h3>
       <p>Suscríbete y recibe un <strong>10% de descuento</strong> en tu primera compra + novedades y ofertas exclusivas.</p>
-      {% form 'customer', id: 'newsletter-form' %}
+      {% form 'customer' %}
         <div class="newsletter-form">
           <input
             type="email"
@@ -12,9 +12,9 @@
             class="newsletter-input"
             placeholder="tu@correo.com"
             required
-            aria-label="Tu correo electrónico"
+            aria-label="Tu correo electronico"
           >
-          <button type="submit" class="newsletter-btn">Quiero mi descuento ✨</button>
+          <button type="submit" class="newsletter-btn">Quiero mi descuento</button>
         </div>
       {% endform %}
     </div>
