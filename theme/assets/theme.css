@@ -96,9 +96,11 @@ ul { list-style: none; }
 
 /* ─── Announcement Bar ───────────────────────────────────── */
 .announcement-bar {
-  background: linear-gradient(135deg, #E8621A, #C44A1E 50%, #FF8C52);
-  color: #fff; text-align: center; font-size: 13px; font-weight: 500;
+  background: linear-gradient(90deg, #FF4500, #FF6B00 50%, #FF8C00);
+  color: #fff; text-align: center; font-size: 13px; font-weight: 600;
   padding: 8px 40px; position: relative; overflow: hidden;
+  letter-spacing: .01em;
+  text-shadow: 0 1px 3px rgba(0,0,0,.15);
 }
 .announcement-bar__text { display: block; animation: fadeInUp .4s ease; }
 .announcement-bar__close {
