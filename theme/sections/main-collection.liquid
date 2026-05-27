@@ -23,26 +23,22 @@
           <button class="coll-sidebar__clear" id="clear-filters-btn">Limpiar</button>
         </div>
 
-        {% assign vendors = collection.products | map: 'vendor' | uniq | sort %}
-        {% if vendors.size > 0 %}
-          <div class="filter-group">
+        <div class="filter-group">
             <button class="filter-group__toggle" aria-expanded="true">
               Marca
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="filter-group__body">
-              {% for vendor in vendors %}
-                {% unless vendor == 'My Store' or vendor == blank %}
-                  <label class="filter-check">
-                    <input type="checkbox" class="filter-vendor-cb" value="{{ vendor }}">
-                    <span class="filter-check__box"></span>
-                    <span class="filter-check__label">{{ vendor }}</span>
-                  </label>
-                {% endunless %}
+              {% assign all_brands = 'Ame,Anik,Anyeluz,Belotti,Brujería,Byspro,Corbeta,Garnier,Kaba,Kaloe,La Poción,La Receta,Leche Pal Pelo,Lehit,L\'Oréal,Maybelline,Melu,Meycis,Milagros,Montoc,Nude,Nutribela,Olé,Origen Botánico,Pili,Ponto,Prokapil,Prokpil,Recamier,Ruby Rose,Samy,Skala,Smart,Trendy,Vogue' | split: ',' %}
+              {% for brand in all_brands %}
+                <label class="filter-check">
+                  <input type="checkbox" class="filter-vendor-cb" value="{{ brand }}">
+                  <span class="filter-check__box"></span>
+                  <span class="filter-check__label">{{ brand }}</span>
+                </label>
               {% endfor %}
             </div>
           </div>
-        {% endif %}
       </aside>
 
       <!-- Main -->
