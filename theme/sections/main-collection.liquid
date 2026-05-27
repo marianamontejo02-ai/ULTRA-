@@ -28,7 +28,8 @@
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="filter-group__body">
-            {% assign all_brands = 'Ame,Anik,Anyeluz,Belotti,Brujería,Byspro,Corbeta,Garnier,Kaba,Kaloe,La Poción,La Receta,Leche Pal Pelo,Lehit,L\'Oréal,Maybelline,Melu,Meycis,Milagros,Montoc,Nude,Nutribela,Olé,Origen Botánico,Pili,Ponto,Prokapil,Prokpil,Recamier,Ruby Rose,Samy,Skala,Smart,Trendy,Vogue' | split: ',' %}
+            {% capture brands_str %}Ame,Anik,Anyeluz,Belotti,Brujería,Byspro,Corbeta,Garnier,Kaba,Kaloe,La Poción,La Receta,Leche Pal Pelo,Lehit,L'Oréal,Maybelline,Melu,Meycis,Milagros,Montoc,Nude,Nutribela,Olé,Origen Botánico,Pili,Ponto,Prokapil,Prokpil,Recamier,Ruby Rose,Samy,Skala,Smart,Trendy,Vogue{% endcapture %}
+            {% assign all_brands = brands_str | split: ',' %}
             {% for brand in all_brands %}
               {% assign brand_handle = brand | handleize %}
               {% assign is_active = false %}
