@@ -732,21 +732,23 @@ ul { list-style: none; }
 .filter-check__label { font-size: 13px; color: var(--text-muted); line-height: 1.3; }
 .filter-check:hover .filter-check__label { color: var(--text); }
 
-/* Brand navigation links in sidebar */
+/* Brand navigation links in sidebar — chips */
+.filter-group__body--brands {
+  display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 12px 14px;
+}
 .filter-brand-link {
-  display: block; font-size: 13px; color: var(--text-muted);
-  padding: 5px 0; line-height: 1.3;
-  transition: color .15s;
+  display: inline-block; font-size: 11.5px; font-weight: 500;
+  color: var(--text-muted); padding: 5px 11px;
+  border: 1.5px solid var(--border); border-radius: var(--radius-full);
+  line-height: 1; transition: border-color .15s, color .15s, background .15s;
+  white-space: nowrap;
 }
-.filter-brand-link:hover { color: var(--ultra); }
+.filter-brand-link:hover {
+  border-color: var(--ultra); color: var(--ultra);
+}
 .filter-brand-link.active {
-  color: var(--ultra); font-weight: 700;
-  position: relative;
-}
-.filter-brand-link.active::before {
-  content: ''; position: absolute; left: -16px; top: 50%;
-  transform: translateY(-50%);
-  width: 3px; height: 16px; background: var(--ultra); border-radius: 2px;
+  background: var(--ultra); border-color: var(--ultra);
+  color: #fff; font-weight: 700;
 }
 
 /* Toolbar */
