@@ -19,26 +19,26 @@
       <!-- Sidebar -->
       <aside class="coll-sidebar" id="coll-sidebar">
         <div class="coll-sidebar__head">
-          <span class="coll-sidebar__title">Filtrar</span>
-          <button class="coll-sidebar__clear" id="clear-filters-btn">Limpiar</button>
+          <span class="coll-sidebar__title">Marcas</span>
         </div>
 
         <div class="filter-group">
-            <button class="filter-group__toggle" aria-expanded="true">
-              Marca
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="filter-group__body">
-              {% assign all_brands = 'Ame,Anik,Anyeluz,Belotti,Brujería,Byspro,Corbeta,Garnier,Kaba,Kaloe,La Poción,La Receta,Leche Pal Pelo,Lehit,L\'Oréal,Maybelline,Melu,Meycis,Milagros,Montoc,Nude,Nutribela,Olé,Origen Botánico,Pili,Ponto,Prokapil,Prokpil,Recamier,Ruby Rose,Samy,Skala,Smart,Trendy,Vogue' | split: ',' %}
-              {% for brand in all_brands %}
-                <label class="filter-check">
-                  <input type="checkbox" class="filter-vendor-cb" value="{{ brand }}">
-                  <span class="filter-check__box"></span>
-                  <span class="filter-check__label">{{ brand }}</span>
-                </label>
-              {% endfor %}
-            </div>
+          <button class="filter-group__toggle" aria-expanded="true">
+            Marca
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="filter-group__body">
+            {% assign all_brands = 'Ame,Anik,Anyeluz,Belotti,Brujería,Byspro,Corbeta,Garnier,Kaba,Kaloe,La Poción,La Receta,Leche Pal Pelo,Lehit,L\'Oréal,Maybelline,Melu,Meycis,Milagros,Montoc,Nude,Nutribela,Olé,Origen Botánico,Pili,Ponto,Prokapil,Prokpil,Recamier,Ruby Rose,Samy,Skala,Smart,Trendy,Vogue' | split: ',' %}
+            {% for brand in all_brands %}
+              {% assign brand_handle = brand | handleize %}
+              {% assign is_active = false %}
+              {% if collection.handle == brand_handle %}{% assign is_active = true %}{% endif %}
+              <a href="/collections/{{ brand_handle }}" class="filter-brand-link {% if is_active %}active{% endif %}">
+                {{ brand }}
+              </a>
+            {% endfor %}
           </div>
+        </div>
       </aside>
 
       <!-- Main -->
@@ -90,34 +90,12 @@
 </div>
 
 <script>
-// Restaurar estado de checkboxes al cargar
-(function() {
-  var params = new URLSearchParams(window.location.search);
-  // Marcas activas
-  var activeVendors = params.getAll('filter.p.vendor');
-  document.querySelectorAll('.filter-vendor-cb').forEach(function(cb) {
-    if (activeVendors.includes(cb.value)) cb.checked = true;
-  });
-})();
-
 // Ordenar
 document.getElementById('sort-select')?.addEventListener('change', function() {
   var url = new URL(window.location.href);
   url.searchParams.set('sort_by', this.value);
   window.location.href = url.toString();
 });
-
-// Filtro por marca — selección múltiple
-document.querySelectorAll('.filter-vendor-cb').forEach(function(cb) {
-  cb.addEventListener('change', function() {
-    var checked = Array.from(document.querySelectorAll('.filter-vendor-cb:checked')).map(function(c){ return c.value; });
-    var url = new URL(window.location.href);
-    url.searchParams.delete('filter.p.vendor');
-    checked.forEach(function(v) { url.searchParams.append('filter.p.vendor', v); });
-    window.location.href = url.toString();
-  });
-});
-
 
 // Abrir/cerrar grupos de filtros
 document.querySelectorAll('.filter-group__toggle').forEach(function(btn) {
@@ -133,11 +111,6 @@ document.querySelectorAll('.filter-group__toggle').forEach(function(btn) {
 document.getElementById('filter-toggle-btn')?.addEventListener('click', function() {
   document.getElementById('coll-sidebar').classList.toggle('open');
   this.setAttribute('aria-expanded', document.getElementById('coll-sidebar').classList.contains('open'));
-});
-
-// Limpiar todos los filtros
-document.getElementById('clear-filters-btn')?.addEventListener('click', function() {
-  window.location.href = window.location.pathname;
 });
 </script>
 

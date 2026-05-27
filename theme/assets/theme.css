@@ -732,6 +732,23 @@ ul { list-style: none; }
 .filter-check__label { font-size: 13px; color: var(--text-muted); line-height: 1.3; }
 .filter-check:hover .filter-check__label { color: var(--text); }
 
+/* Brand navigation links in sidebar */
+.filter-brand-link {
+  display: block; font-size: 13px; color: var(--text-muted);
+  padding: 5px 0; line-height: 1.3;
+  transition: color .15s;
+}
+.filter-brand-link:hover { color: var(--ultra); }
+.filter-brand-link.active {
+  color: var(--ultra); font-weight: 700;
+  position: relative;
+}
+.filter-brand-link.active::before {
+  content: ''; position: absolute; left: -16px; top: 50%;
+  transform: translateY(-50%);
+  width: 3px; height: 16px; background: var(--ultra); border-radius: 2px;
+}
+
 /* Toolbar */
 .coll-toolbar {
   display: flex; align-items: center; justify-content: space-between;
