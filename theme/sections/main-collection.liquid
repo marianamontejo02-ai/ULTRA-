@@ -43,17 +43,6 @@
             </div>
           </div>
         {% endif %}
-
-        <div class="filter-group">
-          <button class="filter-group__toggle" aria-expanded="true">
-            Precio
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-          <div class="filter-group__body">
-            <label class="filter-check"><input type="checkbox" class="filter-price-cb" value="0-40000"><span class="filter-check__box"></span><span class="filter-check__label">Menos de $40.000</span></label>
-            <label class="filter-check"><input type="checkbox" class="filter-price-cb" value="0-60000"><span class="filter-check__box"></span><span class="filter-check__label">Menos de $60.000</span></label>
-          </div>
-        </div>
       </aside>
 
       <!-- Main -->
@@ -113,13 +102,6 @@
   document.querySelectorAll('.filter-vendor-cb').forEach(function(cb) {
     if (activeVendors.includes(cb.value)) cb.checked = true;
   });
-  // Precio activo
-  var priceLte = params.get('filter.v.price.lte');
-  if (priceLte) {
-    document.querySelectorAll('.filter-price-cb').forEach(function(cb) {
-      if (cb.value === '0-' + priceLte) cb.checked = true;
-    });
-  }
 })();
 
 // Ordenar
@@ -140,24 +122,6 @@ document.querySelectorAll('.filter-vendor-cb').forEach(function(cb) {
   });
 });
 
-// Filtro por precio — solo una opción a la vez
-document.querySelectorAll('.filter-price-cb').forEach(function(cb) {
-  cb.addEventListener('change', function() {
-    // Desmarcar las demás opciones de precio
-    document.querySelectorAll('.filter-price-cb').forEach(function(other) {
-      if (other !== cb) other.checked = false;
-    });
-    var url = new URL(window.location.href);
-    url.searchParams.delete('filter.v.price.gte');
-    url.searchParams.delete('filter.v.price.lte');
-    if (cb.checked) {
-      var parts = cb.value.split('-');
-      url.searchParams.set('filter.v.price.gte', parts[0]);
-      url.searchParams.set('filter.v.price.lte', parts[1]);
-    }
-    window.location.href = url.toString();
-  });
-});
 
 // Abrir/cerrar grupos de filtros
 document.querySelectorAll('.filter-group__toggle').forEach(function(btn) {
