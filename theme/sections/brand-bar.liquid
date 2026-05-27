@@ -1,27 +1,65 @@
-{% assign brands = 'L&apos;Oréal 🇫🇷,Anyeluz 🇨🇴,Atenea 🇨🇴,Montoc 🇨🇴,Milagros 🇨🇴' | split: ',' %}
-
 <div class="brand-bar">
   <p class="brand-bar__label">Marcas que amamos y distribuimos</p>
-  <div style="overflow:hidden">
+  <div class="brand-bar__overflow">
     <div class="brand-bar__track">
-      {% for brand in brands %}
-        {% assign parts = brand | split: ' ' %}
-        {% assign flag = parts | last %}
-        {% assign name = brand | remove: flag | strip %}
-        <div class="brand-bar__item">
-          <span class="brand-bar__flag">{{ flag }}</span>
-          <span class="brand-bar__name">{{ name }}</span>
-        </div>
+
+      {% capture brands_raw %}Anyeluz|🇨🇴|anyeluz
+Recamier|🇨🇴|recamier
+Vogue|🇨🇴|vogue
+Milagros|🇨🇴|milagros
+Montoc|🇨🇴|montoc
+La Poción|🇨🇴|la-pocion
+La Receta|🇨🇴|la-receta
+Leche Pal Pelo|🇨🇴|leche-pal-pelo
+Olé|🇨🇴|ole
+Brujería|🇨🇴|brujeria
+Byspro|🇨🇴|byspro
+Corbeta|🇨🇴|corbeta
+Kaba|🇨🇴|kaba
+Kaloe|🇨🇴|kaloe
+Lehit|🇨🇴|lehit
+Melu|🇨🇴|melu
+Meycis|🇨🇴|meycis
+Nude|🇨🇴|nude
+Origen Botánico|🇨🇴|origen-botanico
+Pili|🇨🇴|pili
+Prokapil|🇨🇴|prokapil
+Prokpil|🇨🇴|prokpil
+Smart|🇨🇴|smart
+Trendy|🇨🇴|trendy
+Ame|🇨🇴|ame
+Anik|🇨🇴|anik
+Belotti|🇨🇴|belotti
+Ponto|🇨🇴|ponto
+Atenea|🇨🇴|atenea
+L'Oréal|🇫🇷|loreal
+Garnier|🇫🇷|garnier
+Maybelline|🇺🇸|maybelline
+Ruby Rose|🇧🇷|ruby-rose
+Skala|🇧🇷|skala
+Samy|🇧🇷|samy
+Nutribela|🇧🇷|nutribela{% endcapture %}
+
+      {% assign brand_rows = brands_raw | split: "
+" %}
+
+      {% comment %} Primera pasada (para el ticker infinito duplicamos) {% endcomment %}
+      {% for pass in (1..2) %}
+        {% for row in brand_rows %}
+          {% assign row_clean = row | strip %}
+          {% if row_clean != '' %}
+            {% assign parts = row_clean | split: '|' %}
+            {% assign b_name   = parts[0] %}
+            {% assign b_flag   = parts[1] %}
+            {% assign b_handle = parts[2] %}
+            <a href="/collections/{{ b_handle }}" class="brand-bar__item">
+              <span class="brand-bar__flag">{{ b_flag }}</span>
+              <span class="brand-bar__name">{{ b_name }}</span>
+            </a>
+          {% endif %}
+        {% endfor %}
       {% endfor %}
-      {% for brand in brands %}
-        {% assign parts = brand | split: ' ' %}
-        {% assign flag = parts | last %}
-        {% assign name = brand | remove: flag | strip %}
-        <div class="brand-bar__item">
-          <span class="brand-bar__flag">{{ flag }}</span>
-          <span class="brand-bar__name">{{ name }}</span>
-        </div>
-      {% endfor %}
+
     </div>
   </div>
 </div>
